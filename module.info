@@ -1,0 +1,4 @@
+desc=Foo Module
+os_support=*-linux
+category=system
+
