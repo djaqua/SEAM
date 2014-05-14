@@ -1,4 +1,4 @@
-desc=Foo Module
+desc=Simple Email Administration Module
 os_support=*-linux
 category=system
 
