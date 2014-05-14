@@ -38,6 +38,7 @@ $stmt->execute or die qq~
     "Whoops, $DBI::errstr"
 ~;
 
+print qq~<form action="update.cgi" method="post">~;
 
 print qq~<select name="username">~;
 while (@fields_array = $stmt->fetchrow_array) {
