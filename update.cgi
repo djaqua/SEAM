@@ -14,9 +14,11 @@ my $username = $cgi->param('username');
 my $password1 = $cgi->param('password1');
 my $password2 = $cgi->param('password2');
 
-if ($password1 == $password2) {
-    print "username: $username, password: $password1";
+if ($password1 eq $password2) {
+    
+    
 } else {
+    # TODO: come back and do this with AJAX
     print "password mismatch, try again!";
 }
 
