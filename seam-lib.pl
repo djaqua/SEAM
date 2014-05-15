@@ -24,7 +24,7 @@ sub get_database {
 }
 
 sub update_password {
-    my $sql = "UPDATE virtual_users SET password ENCRYPT($_[1]) WHERE id=$_[0]";
+    my $sql = "UPDATE virtual_users SET password=ENCRYPT(\"$_[1]\") WHERE id=$_[0]";
 #    print "$sql \n";
     my $stmt = get_database()->prepare( $sql );                        
     $stmt->execute or die qq~                                                       
