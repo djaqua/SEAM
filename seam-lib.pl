@@ -11,33 +11,55 @@ BEGIN { push(@INC, ".."); };
 use WebminCore;
 init_config();
 
-my $select_usernames = "SELECT id, username FROM virtual_users WHERE domain=2";
+$select_usernames = "SELECT id, username FROM virtual_users WHERE domain=2";
 
+my $database;
 
-sub get_usernames {
-    
-    my @users;
-
-    my $database = DBI->connect( "DBI:mysql:$DBNAME", $DBUSER, $DBPASS );
-
-    my $stmt = $database->prepare( $select_usernames );
-    $stmt->execute or die qq~
-        Simple Email Administration Modules says:
-        "Whoops, $DBI::errstr"
-    ~;
-
-    print "Hello?";
-        
-    while (@fields = $stmt->fetchrow_array) {
-        print "id: $fields[0], <br> username: $fields[1]";
-        push( @users, {'id'=> $fields[0], 'username' => $fields[1]} );
+sub get_database {
+    if (!$database or !$database->ping) {
+        $database = DBI->connect( "DBI:mysql:$DBNAME", $DBUSER, $DBPASS );
     }
 
-    $stmt->finish();
-    $database->disconnect();
-
-    return @users;
+    return $database;        
 }
+
+sub update_password {
+    my $sql = "UPDATE virtual_users SET password ENCRYPT($_[1]) WHERE id=$_[0]";
+#    print "$sql \n";
+    my $stmt = get_database()->prepare( $sql );                        
+    $stmt->execute or die qq~                                                       
+        Simple Email Administration Modules says:                                   
+        "Whoops, $DBI::errstr"                                                      
+    ~;                    
+
+}
+
+
+
+#sub get_usernames {
+    
+#    my @users;
+
+#    my $database = DBI->connect( "DBI:mysql:$DBNAME", $DBUSER, $DBPASS );
+
+#    my $stmt = $database->prepare( $select_usernames );
+#    $stmt->execute or die qq~
+#        Simple Email Administration Modules says:
+#        "Whoops, $DBI::errstr"
+#    ~;
+        
+#    while (@fields = $stmt->fetchrow_array) {
+#        #print "id: $fields[0], <br> username: $fields[1]";
+#        #push( @users, {'id'=> $fields[0], 'username' => $fields[1]} );
+        
+#        $users[$fields[0]] = $fields[1];
+#    }
+
+#    $stmt->finish();
+#    $database->disconnect();
+
+#    return @users;
+#}
 
 
 

@@ -7,15 +7,23 @@ require 'seam-lib.pl';
 ui_print_header( undef, $text{'index_title'}, "SEAM", undef, 1, 1 );
 print qq~<form action="update.cgi" method="post">~;
 
+my $stmt = get_database()->prepare( $select_usernames );                        
+$stmt->execute or die qq~                                                  
+    Simple Email Administration Modules says:                              
+    "Whoops, $DBI::errstr"                                                 
+~;
+
 # Output a select field for a form which contains all the usernames for 
 # a particular domain.
-#print qq~<select name="username">~;
-@usernames = (get_usernames());
-foreach my $fields (@usernames) {
-    print qq~username="$fields{'username'}"~;
-    #print qq~<option value="$fields{'id'}">$fields{'username'}</option>~;
-}
-#print qq~</select>~;
+print qq~<select name="username">~;                                                                                                                                              
+while (@fields = $stmt->fetchrow_array) {                                  
+    print qq~<option value="$fields[0]">$fields[1]</option>~;
+}                                                                          
+print qq~</select>~;
+                                                                            
+$stmt->finish();                                                           
+get_database()->disconnect();   
+
 
 print qq~                                                                       
     <br>                                                                        
