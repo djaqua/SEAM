@@ -11,7 +11,7 @@ BEGIN { push(@INC, ".."); };
 use WebminCore;
 init_config();
 
-$select_users = "SELECT id, username FROM virtual_users WHERE domain=25";
+#$select_users = "SELECT id, username FROM virtual_users WHERE domain=25";
 $select_users_sql = qq~ SELECT id, username 
                         FROM virtual_users 
                         WHERE domain=__DOMAIN__ ~;
@@ -37,10 +37,11 @@ sub update_password {
 }
 
 
-
+=head2 get_users()
+    Returns an array of id/username hashes for users in some domain.
+=cut
 sub get_users {
     my @users = ();
-    
     $sql = $select_users_sql;
     
     if ($sql =~ s/(__)DOMAIN(__)/$_[0]/g) {
@@ -48,18 +49,12 @@ sub get_users {
         $stmt->execute or die qq~ 
             "Whoops, $DBI::errstr"                                                      
         ~;
-#        print "where we should be ...";
         while (@fields = $stmt->fetchrow_array) {                                  
-            #print qq~<option value="$fields[0]">$fields[1]</option>~;
-#            print "User: $fields[1] <br>";
             push( @users, {'id'=>$fields[0], 'username'=>$fields[1]} );
         }
-
     }
-
     return @users;    
 }
-
 
 
 =head2 get_seam_config()
