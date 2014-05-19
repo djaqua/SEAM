@@ -11,7 +11,10 @@ BEGIN { push(@INC, ".."); };
 use WebminCore;
 init_config();
 
-$select_usernames = "SELECT id, username FROM virtual_users WHERE domain=2";
+$select_users = "SELECT id, username FROM virtual_users WHERE domain=25";
+$select_users_sql = qq~ SELECT id, username 
+                        FROM virtual_users 
+                        WHERE domain=__DOMAIN__ ~;
 
 my $database;
 
@@ -28,7 +31,6 @@ sub update_password {
 #    print "$sql \n";
     my $stmt = get_database()->prepare( $sql );                        
     $stmt->execute or die qq~                                                       
-        Simple Email Administration Modules says:                                   
         "Whoops, $DBI::errstr"                                                      
     ~;                    
 
@@ -36,30 +38,27 @@ sub update_password {
 
 
 
-#sub get_usernames {
+sub get_users {
+    my @users = ();
     
-#    my @users;
+    $sql = $select_users_sql;
+    
+    if ($sql =~ s/(__)DOMAIN(__)/$_[0]/g) {
+        $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~ 
+            "Whoops, $DBI::errstr"                                                      
+        ~;
+#        print "where we should be ...";
+        while (@fields = $stmt->fetchrow_array) {                                  
+            #print qq~<option value="$fields[0]">$fields[1]</option>~;
+#            print "User: $fields[1] <br>";
+            push( @users, {'id'=>$fields[0], 'username'=>$fields[1]} );
+        }
 
-#    my $database = DBI->connect( "DBI:mysql:$DBNAME", $DBUSER, $DBPASS );
+    }
 
-#    my $stmt = $database->prepare( $select_usernames );
-#    $stmt->execute or die qq~
-#        Simple Email Administration Modules says:
-#        "Whoops, $DBI::errstr"
-#    ~;
-        
-#    while (@fields = $stmt->fetchrow_array) {
-#        #print "id: $fields[0], <br> username: $fields[1]";
-#        #push( @users, {'id'=> $fields[0], 'username' => $fields[1]} );
-        
-#        $users[$fields[0]] = $fields[1];
-#    }
-
-#    $stmt->finish();
-#    $database->disconnect();
-
-#    return @users;
-#}
+    return @users;    
+}
 
 
 
