@@ -8,6 +8,7 @@
 =cut
 
 BEGIN { push(@INC, ".."); };
+use DBI;
 use WebminCore;
 init_config();
 
@@ -18,6 +19,10 @@ $select_users_sql = qq~ SELECT id, username
 
 my $database;
 
+=head2 get_database()
+    Returns the active database connection if one exists, otherwise establishes
+    a new one.
+=cut
 sub get_database {
     if (!$database or !$database->ping) {
         $database = DBI->connect( "DBI:mysql:$DBNAME", $DBUSER, $DBPASS );
@@ -26,14 +31,15 @@ sub get_database {
     return $database;        
 }
 
+=head2 update_password(id, password)
+    Updates the password for a user specified by 'id'.
+=cut
 sub update_password {
     my $sql = "UPDATE virtual_users SET password=ENCRYPT(\"$_[1]\") WHERE id=$_[0]";
-#    print "$sql \n";
     my $stmt = get_database()->prepare( $sql );                        
     $stmt->execute or die qq~                                                       
         "Whoops, $DBI::errstr"                                                      
     ~;                    
-
 }
 
 
@@ -61,7 +67,6 @@ sub get_users {
  Returns the SEAM Webserver configuration as a list of hash references with 
  name and value keys.
 =cut
-
 sub get_seam_config {
     my $lref = &read_file_lines( $config{'seam_conf'} );
     my @rv;
