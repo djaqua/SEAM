@@ -1,28 +1,27 @@
 #!/usr/bin/perl
 
+use CGI;
 require 'seam-lib.pl';
 require 'seam-ui-lib.pl';
-                                                                               
-ui_print_header( undef, $text{'index_title'}, "");
 
-print qq~<form id="domainSelectForm" action="select_user.cgi" action="POST">~;
+my $cgi = CGI->new();
+
+my $domain = $cgi->param('domain');
+if (undef == $domain) {
+    print "undefined!";
+}
+                                                                               
+ui_print_header( undef, $text{'index_title'}, "SEAM", undef, 1, 1 );
+print qq~
+~;
+
+print qq~<form id="domainSelectForm" action="select_user.cgi" method="POST">~;
 seam_domain_selector();
 print qq~</form>~;
 
+print qq~<form action="update_password.cgi" method="POST">~;
+seam_user_selector($domain);
 print qq~
-<form action="update_password.cgi" action="post">
-<select name="user">
-~;
-
-# Output a select field for a form which contains all the usernames for 
-# a particular domain.
-my @users = get_users(25);
-foreach my $entry (@users) {
-    print qq~ <option value="$entry->{id}">$entry->{username}</option>~;   
-}
-
-print qq~
-    </select>                                                          
     <br>                                                                        
     Please provide a new password here                                          
     <input type="password" name="password1" id="password1">                     
@@ -48,5 +47,8 @@ print qq~
         getObject("domainSelectForm").submit();
     };
 
+    getObject("user").onchange = function() {
+        alert( "user changed!" );
+    };
     </script>
 ~;  

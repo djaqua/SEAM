@@ -25,3 +25,5 @@ if ($password1 eq $password2) {
 
 
 print ui_print_footer( "", $text{'index_return'},);
+
+get_database()->disconnect();

@@ -12,10 +12,19 @@ use DBI;
 use WebminCore;
 init_config();
 
-#$select_users = "SELECT id, username FROM virtual_users WHERE domain=25";
-$select_users_sql = qq~ SELECT id, username 
-                        FROM virtual_users 
-                        WHERE domain=__DOMAIN__ ~;
+my $select_domains_sql = qq~ SELECT id, name 
+                             FROM virtual_domains 
+                           ~;
+
+my $select_users_sql = qq~ SELECT id, username 
+                           FROM virtual_users 
+                           WHERE domain=__DOMAIN__ 
+                         ~;
+
+my $update_password_sql = qq~ UPDATE virtual_users 
+                              SET password=ENCRYPT(\"__PASSWORD__\") 
+                              WHERE id=__ID__
+                            ~;
 
 my $database;
 
@@ -35,22 +44,30 @@ sub get_database {
     Updates the password for a user specified by 'id'.
 =cut
 sub update_password {
-    my $sql = "UPDATE virtual_users SET password=ENCRYPT(\"$_[1]\") WHERE id=$_[0]";
-    my $stmt = get_database()->prepare( $sql );                        
-    $stmt->execute or die qq~                                                       
-        "Whoops, $DBI::errstr"                                                      
-    ~;                    
+    
+    local $sql = $update_password_sql;
+    
+    if ($sql =~ s/__PASSWORD__/$_[1]/g 
+    and $sql =~ s/__ID__/$_[0]/g) {
+        local $stmt = get_database()->prepare( $sql );                        
+        $stmt->execute or die qq~                                                       
+            "Whoops, $DBI::errstr"                                                      
+        ~;     
+        $stmt->finish();            
+    }
 }
 
 
-=head2 get_users()
-    Returns an array of id/username hashes for users in some domain.
+=head2 get_users(domain_id)
+    Returns an array of id/username hashes for all the virtual users in a
+    virtual domain specified by domain_id.
 =cut
 sub get_users {
-    my @users = ();
+    
+    local @users = ();
     $sql = $select_users_sql;
     
-    if ($sql =~ s/(__)DOMAIN(__)/$_[0]/g) {
+    if ($sql =~ s/__DOMAIN__/$_[0]/g) {
         $stmt = get_database()->prepare( $sql );
         $stmt->execute or die qq~ 
             "Whoops, $DBI::errstr"                                                      
@@ -58,10 +75,28 @@ sub get_users {
         while (@fields = $stmt->fetchrow_array) {                                  
             push( @users, {'id'=>$fields[0], 'username'=>$fields[1]} );
         }
+        $stmt->finish();
     }
     return @users;    
 }
 
+=head2 get_domains()
+    Returns an array of id/name hashes representing all virtual domains.
+=cut
+sub get_domains {
+    local @domains = ();
+
+    local $stmt = get_database()->prepare( $select_domains_sql );
+    
+    $stmt->execute or die qq~
+            "Whoops, $DBI::errstr"
+    ~;
+    while (@fields = $stmt->fetchrow_array) { 
+        push( @domains, {'id'=>$fields[0], 'name'=>$fields[1]} );
+    }
+
+    return @domains;
+}
 
 =head2 get_seam_config()
  Returns the SEAM Webserver configuration as a list of hash references with 
