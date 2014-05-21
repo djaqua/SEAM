@@ -10,28 +10,6 @@ seam_domain_selector();
 print qq~</form>~;
 
 print qq~
-<form action="update_password.cgi" action="post">
-<select name="user">
-~;
-
-# Output a select field for a form which contains all the usernames for 
-# a particular domain.
-my @users = get_users(25);
-foreach my $entry (@users) {
-    print qq~ <option value="$entry->{id}">$entry->{username}</option>~;   
-}
-
-print qq~
-    </select>                                                          
-    <br>                                                                        
-    Please provide a new password here                                          
-    <input type="password" name="password1" id="password1">                     
-    <br>                                                                        
-    Please confirm your password here                                           
-    <input type="password" name="password2" id="password2">                     
-    <br>                                                                        
-    <input type="submit" name="proceedBtn" value="Proceed">                     
-    </form>       
      
     <script type="text/javascript">
     function getObject(domId) {                                                     

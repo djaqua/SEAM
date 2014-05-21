@@ -16,11 +16,11 @@ print qq~
 ~;
 
 print qq~<form id="domainSelectForm" action="select_user.cgi" method="POST">~;
-seam_domain_selector();
+seam_domain_selector( $domain ); 
 print qq~</form>~;
 
 print qq~<form action="update_password.cgi" method="POST">~;
-seam_user_selector($domain);
+seam_user_selector( $domain );
 print qq~
     <br>                                                                        
     Please provide a new password here                                          

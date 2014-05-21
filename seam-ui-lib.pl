@@ -17,7 +17,11 @@ sub seam_domain_selector {
     print qq~<select name="domain" id="domain">\n~;                                                                                                                                              
 
     foreach my $entry (@domains) {
-        print qq~\t<option value="$entry->{id}">$entry->{name}</option>\n~;   
+        if ($_[0] eq $entry->{id}) {
+            print qq~\t<option value="$entry->{id}" selected>$entry->{name}</option>\n~;   
+        } else {
+            print qq~\t<option value="$entry->{id}">$entry->{name}</option>\n~;   
+        }
     }
 
     print qq~</select>\n~;
