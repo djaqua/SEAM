@@ -46,9 +46,5 @@ print qq~
     getObject("domain").onchange = function() {
         getObject("domainSelectForm").submit();
     };
-
-    getObject("user").onchange = function() {
-        alert( "user changed!" );
-    };
     </script>
 ~;  
