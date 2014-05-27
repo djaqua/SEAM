@@ -7,6 +7,7 @@ ui_print_header( undef, $text{'index_title'}, "");
 
 print qq~<form id="domainSelectForm" action="select_user.cgi" action="POST">~;
 seam_domain_selector();
+print qq~<input type="submit" value="Proceed">~;
 print qq~</form>~;
 
 print qq~
