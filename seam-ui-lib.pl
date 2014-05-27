@@ -38,7 +38,7 @@ sub seam_domain_selector {
     print qq~</select>\n~;
 }
 
-=head2 seam_user_selector(domain_id, form_field_id) 
+=head2 seam_user_selector(domain_id, default_user_id, form_field_id) 
     Renders a form select-field for that allows the selection of ONE from a 
     list of all the users for a virtual domain specified by domain_id.
 =cut
@@ -46,15 +46,19 @@ sub seam_user_selector {
  
     # improve readability, unify format
     local $domain_id = defined $_[0] ? $_[0] : "";    
-    local $form_field_id = (defined $_[1] and "" ne $_[1]) ? $_[1] : "user";
+    local $default_user_id = defined $_[1] ? $_[1] : "";
+    local $form_field_id = (defined $_[2] and "" ne $_[2]) ? $_[2] : "user";
  
     print qq~<select name="$form_field_id" id="$form_field_id">\n~;                                                                                                                                              
     
     if ("" ne $domain_id) {
         local @users = get_users( $domain_id );
         foreach my $entry (@users) {
-            print qq~ <option value="$entry->{id}">~;
-            print qq~$entry->{username}</option>\n~;   
+            print qq~ <option value="$entry->{id}"~;
+            if ($entry->{id} eq $default_user_id) {
+                print " selected";
+            }
+            print qq~>$entry->{username}</option>\n~;   
         }
     }
     

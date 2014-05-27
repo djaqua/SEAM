@@ -20,24 +20,11 @@ seam_domain_selector( $domain );
 print qq~<input type="submit" value="Proceed">~;
 print qq~</form>~;
 
-print qq~<form action="edit_user.cgi" method="POST">~;
+print qq~<form id="userSelectForm" action="choose_action.cgi" method="POST">
+<input type="hidden" name="domain" value="$domain">~;
+
 seam_user_selector( $domain );
 print qq~
-
-    <div style="border: 1px dashed #6395ED" id="addForwarderFields">                                                              
-        <input type="hidden" name="domain" value="$domain">
-        <input type="text" name="destination" id="destination">
-        <input type="submit" name="addForwarderBtn" value="Add Forwarder">
-    </div> 
-    <div style="border: 1px dashed #6395ED" id="updatePasswordFields"> 
-        Please provide a new password here                  
-        <input type="password" name="password1" id="password1">          
-        <br>                                                              
-        Please confirm your password here                  
-        <input type="password" name="password2" id="password2">
-        <br>                                                
-        <input type="submit" name="updatePasswordBtn" value="Update Password">
-    </div>
 </form>       
      
 <script type="text/javascript">
@@ -53,6 +40,10 @@ function getObject(domId) {
 
 getObject("domain").onchange = function() {
     getObject("domainSelectForm").submit();
+};
+
+getObject("user").onchange = function() {
+    getObject("userSelectForm").submit();
 };
 </script>
 ~;  
