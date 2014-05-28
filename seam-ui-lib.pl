@@ -7,7 +7,15 @@
 
 require "seam-lib.pl";
 
+=head2 get_param(argument, default_value)
+=cut
+sub get_param {
+    return (defined $_[0] and $_[0] ne "") ? $_[0] : defined $_[1] ? $_[1] : "";
+}
+
+
 =head2 seam_domain_selector(default_domain_id, form_field_id) 
+
     Renders a form select-field which allows the for selection of ONE from a 
     list of all virtual domains. If a default virtual domain is specified, then
     it is rendered as being selected by default, otherwise, [TODO]. If a form
@@ -39,23 +47,24 @@ sub seam_domain_selector {
 }
 
 =head2 seam_user_selector(domain_id, default_user_id, form_field_id) 
+
     Renders a form select-field for that allows the selection of ONE from a 
     list of all the users for a virtual domain specified by domain_id.
 =cut
 sub seam_user_selector {
  
     # improve readability, unify format
-    local $domain_id = defined $_[0] ? $_[0] : "";    
-    local $default_user_id = defined $_[1] ? $_[1] : "";
-    local $form_field_id = (defined $_[2] and "" ne $_[2]) ? $_[2] : "user";
+    local $domain = get_param( $_[0] );    
+    local $default_user = get_param( $_[1] );
+    local $field_id = get_param( $_[2], "user" );
  
-    print qq~<select name="$form_field_id" id="$form_field_id">\n~;                                                                                                                                              
+    print qq~<select name="$field_id" id="$field_id">\n~;                                                                                                                                              
     
-    if ("" ne $domain_id) {
-        local @users = get_users( $domain_id );
+    if ("" ne $domain) {
+        local @users = get_users( $domain );
         foreach my $entry (@users) {
             print qq~ <option value="$entry->{id}"~;
-            if ($entry->{id} eq $default_user_id) {
+            if ($entry->{id} eq $default_user) {
                 print " selected";
             }
             print qq~>$entry->{username}</option>\n~;   
@@ -64,5 +73,4 @@ sub seam_user_selector {
     
     print qq~</select>\n~;
 }
-
 

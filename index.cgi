@@ -1,14 +1,8 @@
 #!/usr/bin/perl
 
-require 'seam-lib.pl';
-require 'seam-ui-lib.pl';
+require 'seam-forms-lib.pl';
                                                                                
-ui_print_header( undef, $text{'index_title'}, "");
-
-print qq~<form id="domainSelectForm" action="select_user.cgi" action="POST">~;
-seam_domain_selector();
-print qq~<input type="submit" value="Proceed">~;
-print qq~</form>~;
+ui_print_header( undef, $text{'index_title'}, "SEAM");
 
 print qq~
      
@@ -23,9 +17,8 @@ print qq~
         }                                                                           
     }
 
-    getObject("domain").onchange = function() {
-        getObject("domainSelectForm").submit();
-    };
-
     </script>
-~;  
+~; 
+
+seam_domain_select_form();
+ 
