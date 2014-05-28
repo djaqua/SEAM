@@ -33,8 +33,7 @@ seam_user_select_form( $domain, undef, undef, $user );
 #seam_user_selector( $domain, $user );
 #    <form>
 print qq~
-    CHOOSE ACTION
-    <form action="add_forwarder.cgi" method="POST">
+    <form action="add_forward.cgi" method="POST">
         
         <input type="hidden" name="user" value="$user">
         <input type="hidden" name="domain" value="$domain">
