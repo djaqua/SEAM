@@ -10,21 +10,23 @@ sub seam_domain_select_form {
     local $form_id = get_param( $_[1], "domainSelectForm" );
     local $default_domain = get_param( $_[2] );
     local $domain_field_id = get_param( $_[3], "domain" );
-    
-    print qq~ <form id="$form_id" action="$form_action" method="POST"> ~;
+
+    local $str_value;
+    $str_value .= ui_form_start($form_action, "POST", undef, "id=\"$form_id\"");
 
     # its okay if $default_domain_id is the empty string or undefined
-    seam_domain_selector( $default_domain, $domain_field_id );
-    
-    print qq~ 
-\t<script type="text/javascript"> 
-\tgetObject("$domain_field_id").onchange = function() {
-\t    getObject("$form_id").submit();
-\t};
-\t</script>
-\t<input type="submit" value="Update Domain">
-</form>
+    $str_value .= seam_domain_selector( $default_domain, $domain_field_id );
+        
+    $str_value .= qq~ 
+    <script type="text/javascript"> 
+    getObject("$domain_field_id").onchange = function() {
+        getObject("$form_id").submit();
+    };
+    </script>
+    <input type="submit" value="Update Domain">
     ~;
+    $str_value .= ui_form_end();
+    return $str_value;
 }
 
 =head2 seam_domain_select_form(domain, form_action, form_id, default_user, user_field_id)
@@ -37,22 +39,26 @@ sub seam_user_select_form {
     local $form_id = get_param( $_[2], "userSelectForm" );
     local $default_user = get_param( $_[3] );
     local $user_field_id = get_param( $_[4], "user" );
-                                                   
-    print qq~ <form id="$form_id" action="$form_action" method="POST"> ~;            
-                                                                                
-    seam_user_selector( $domain, $default_user );                                                  
 
-    print qq~                                                                       
-\t<input type="hidden" name="domain" value="$domain">
-\t<script type="text/javascript">                                               
+    local $str_value;                                                   
+    $str_value .= ui_form_start($form_action, "POST", undef, "id=\"$form_id\"");
                                                                                 
-\tgetObject("$user_field_id").onchange = function() {                                     
-\t\tgetObject("$form_id").submit();                                       
-\t};                                                                            
-                                                                                
-\t</script>                                                                     
-\t<input type="submit" value="Update User">                  
-</form>                                                                         
+    $str_value .= seam_user_selector( $domain, $default_user );                                                  
+
+    $str_value .= qq~                                                                       
+    <input type="hidden" name="domain" value="$domain">
+    <script type="text/javascript">                                               
+                                                                                    
+    getObject("$user_field_id").onchange = function() {                                     
+        getObject("$form_id").submit();                                       
+    };                                                                            
+                                                                                    
+    </script>                                                                     
+    <input type="submit" value="Update User">
     ~;   
+
+    $str_value .= ui_form_end();
+
+    return $str_value;
 
 }

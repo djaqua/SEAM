@@ -3,6 +3,7 @@
 
 use CGI;
 require 'seam-forms-lib.pl';
+require 'seam-js-lib.pl';
 
 my $cgi = CGI->new();
 
@@ -10,23 +11,12 @@ my $domain = $cgi->param('domain');
 my $user =$cgi->param('user');
                                                                               
 ui_print_header( undef, $text{'index_title'}, "SEAM", undef, 1, 1 );
-print qq~
-<script type="text/javascript">
-function getObject(domId) {                                                     
-    if (document.getElementById) {                                              
-        return document.getElementById(domId);                                  
-    } else if (document.all) {                                                  
-        return document.all[domId];                                             
-    } else if (document.layers) {                                               
-        return document.layers[domId];                                          
-    }                                                                           
-}
-</script>
-~;
 
-seam_domain_select_form( undef, undef, $domain );
+print seam_js_getObject();
 
-seam_user_select_form( $domain, undef, undef, $user );
+print seam_domain_select_form( undef, undef, $domain );
+
+print seam_user_select_form( $domain, undef, undef, $user );
 
 #print qq~<form id="userSelectForm" action="choose_action.cgi" method="POST">~;
 #print qq~<input type="hidden" name="domain" value="$domain">~;

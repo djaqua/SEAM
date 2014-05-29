@@ -30,20 +30,22 @@ sub seam_domain_selector {
     
     local @domains = get_domains();
 
-    print qq~<select name="$form_field_id" id="$form_field_id">\n~;                                                                                                                                              
+    my $str_value = qq~<select name="$form_field_id" id="$form_field_id">\n~;
 
+    
     foreach my $entry (@domains) {
 
-        print qq~\t<option value="$entry->{id}"~;
+        $str_value .= qq~\t<option value="$entry->{id}"~;
         
         if ($default_domain_id eq $entry->{id}) {
-            print qq~ selected~;
+            $str_value .= qq~ selected~;
         }
         
-        print qq~>$entry->{name}</option>\n~;   
+        $str_value .= qq~>$entry->{name}</option>\n~;   
     }
 
-    print qq~</select>\n~;
+    $str_value .= qq~</select>\n~;
+    return $str_value;
 }
 
 =head2 seam_user_selector(domain_id, default_user_id, form_field_id) 
@@ -58,19 +60,20 @@ sub seam_user_selector {
     local $default_user = get_param( $_[1] );
     local $field_id = get_param( $_[2], "user" );
  
-    print qq~<select name="$field_id" id="$field_id">\n~;                                                                                                                                              
+    local $str_value = qq~<select name="$field_id" id="$field_id">\n~;                                                                                                                                              
     
     if ("" ne $domain) {
         local @users = get_users( $domain );
         foreach my $entry (@users) {
-            print qq~ <option value="$entry->{id}"~;
+            $str_value .= qq~ <option value="$entry->{id}"~;
             if ($entry->{id} eq $default_user) {
-                print " selected";
+                $str_value .= " selected";
             }
-            print qq~>$entry->{username}</option>\n~;   
+            $str_value .= qq~>$entry->{username}</option>\n~;   
         }
     }
     
-    print qq~</select>\n~;
+    $str_value .= qq~</select>\n~;
+    return $str_value;
 }
 
