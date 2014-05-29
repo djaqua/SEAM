@@ -12,36 +12,17 @@ my $user =$cgi->param('user');
                                                                               
 ui_print_header( undef, $text{'index_title'}, "SEAM", undef, 1, 1 );
 
-print seam_js_getObject();
-
+# Render a form for selecting a domain which submits to select_user.cgi
 print seam_domain_select_form( undef, undef, $domain );
 
+# Render a form for selecting a user which submits to choose_action.cgi (this)
 print seam_user_select_form( $domain, undef, undef, $user );
 
-#print qq~<form id="userSelectForm" action="choose_action.cgi" method="POST">~;
-#print qq~<input type="hidden" name="domain" value="$domain">~;
-#seam_user_selector( $domain, $user );
-#    <form>
-print qq~
-    <form action="add_forward.cgi" method="POST">
-        
-        <input type="hidden" name="user" value="$user">
-        <input type="hidden" name="domain" value="$domain">
-        <input type="text" name="destination" id="destination">
-        <input type="submit" name="addForwarderBtn" value="Add Forwarder">
-    </form>
+# Render a form for adding a forwarder/alias which submits to add_forwarder.cgi
+print seam_add_forwarder_form( $user, $domain );
 
-    <form action="update_password.cgi" method="POST">
-        
-        <input type="hidden" name="user" value="$user">
+# Render a form for changing a password which submits to update_password.cgi
+print seam_update_password_form( $user );
 
-        Please provide a new password here                  
-        <input type="password" name="password1" id="password1">          
-        <br>                                                              
-        Please confirm the new password here                  
-        <input type="password" name="password2" id="password2">
-        <br>                                                
-        <input type="submit" name="updatePasswordBtn" value="Update Password">
-    
-    </form>    
-~;  
+# Include javascript functionality
+print seam_js::compile();
