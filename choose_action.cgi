@@ -25,4 +25,4 @@ print seam_add_forwarder_form( $user, $domain );
 print seam_update_password_form( $user );
 
 # Include javascript functionality
-print seam_js::compile();
+print seam_js::compile(1);

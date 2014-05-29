@@ -26,4 +26,4 @@ print seam_user_select_form( $domain );
 
 
 # Include javascript functionality
-print seam_js::compile();
+print seam_js::compile(1);

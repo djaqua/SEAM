@@ -14,4 +14,4 @@ ui_print_header( undef, $text{'index_title'}, "SEAM");
 print seam_domain_select_form();
 
 # Include javascript functionality
-print seam_js::compile(); 
+print seam_js::compile(1); 
