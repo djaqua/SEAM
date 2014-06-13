@@ -10,7 +10,8 @@ use strict;
 package seam_js;
 
 # source of all JavaScript managed by this module
-my %scriptlets = ();
+my %functions = ();
+my %statements = ();
 
 
 =head2 use_getObject()
@@ -28,7 +29,7 @@ my %scriptlets = ();
 =cut
 sub use_getObject {
     
-    $scriptlets{getObject}=qq~ 
+    $functions{getObject}=qq~ 
     function getObject(domId) {
         if (document.getElementById) {
             return document.getElementById(domId);
@@ -64,16 +65,49 @@ sub use_getObject {
 =cut
 sub use_addAutoSubmit {
     use_getObject();
-    $scriptlets{addAutoSubmit}=qq~ 
+    $functions{addAutoSubmit}=qq~ 
     function addAutoSubmit(sourceId, formId) {
-        getObject(sourceId).onchange = function() {
-            getObject(formId).submit();
+        getObject( sourceId ).onchange = function() {
+            getObject( formId ).submit();
         }
     }
     \n~;
 }
 
-=head2 audoSubmit(source_id, form_id)
+=head2 use_addAutoClick()
+
+    Adds JavaScript functionality for automatic-form-submission. This function
+    will automatically use getObject and its dependencies if they are not 
+    already being used.
+
+    Example invokation:
+    
+        seam_js::use_addAutoSubmit();
+        print seam_js::compile();
+
+    Results in the following JavaScript:
+         
+        function addAutoSubmit(sourceId, formId) {
+            ...
+        }
+        function getObject(domId) {
+            ...
+        }   
+
+=cut
+sub use_addAutoClick {
+    use_getObject();
+    $functions{addAutoClick}=qq~ 
+    function addAutoClick(sourceId, proxyBtn) {
+        getObject(sourceId).onchange = function() {
+            getObject(proxyBtn).click();
+        }
+    }
+    \n~;
+}
+
+
+=head2 autoSubmit(source_id, form_id)
 
     Appends an invokation of 'autoSubmit' for the event-source and form 
     specified by source_id and form_id, respectively. This function will 
@@ -98,14 +132,29 @@ sub use_addAutoSubmit {
         }
 =cut
 sub autoSubmit {
+    
     use_addAutoSubmit();
+
     my $source_id = $_[0];
     my $form_id = $_[1];
 
-    $scriptlets{'autoSubmit'} .= qq~
-    addAutoSubmit("$source_id", "$form_id");
+    $statements{'autoSubmit'} .= qq~
+    addAutoSubmit("$source_id",, "$form_id");
     \n~;
 }
+
+sub autoClick {
+    
+    use_addAutoClick();
+
+    my $source_id = $_[0];
+    my $proxy_id = $_[1];
+
+    $statements{'autoClick'} .= qq~
+    addAutoClick("$source_id", "$proxy_id");
+    \n~;
+}
+
 
 
 =head2 compile(include_headers) 
@@ -124,19 +173,23 @@ sub autoSubmit {
 =cut
 sub compile {
     my $javascript;
-    foreach my $key (keys %scriptlets) {
-        $javascript .= $scriptlets{$key}
+    foreach my $key (keys %functions) {
+        $javascript .= $functions{$key}
+    }
+
+    foreach my $key (keys %statements) {
+        $javascript .= $statements{$key}
     }
     if (defined $_[0]) {
         #headers
         return qq~<script type="text/javascript">\n$javascript\n</script>~;
     } else {
         # no headers
-        return "$javascripti\n";
+        return "$javascript\n";
     }
 }  
  
 
 
 
-return 1;
+1; # module requirement
