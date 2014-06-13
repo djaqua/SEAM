@@ -1,2 +1,22 @@
-index_title=Simple Email Administration Module
-index_return=email administration 
+index_title=SEAM Select Domain
+index_return=Module Configuration
+
+select_user_title=SEAM Select User
+select_user_return=Select Domain
+
+choose_action_title=SEAM Edit User
+choose_action_return=Select User
+
+update_password_title=SEAM Update Password
+update_password_return=Edit User
+
+update_add_forwarder_title=SEAM Add Forwarder
+update_add_forwarder_return=Edit User
+
+add_auto_responder_title=SEAM Add Auto-responder
+add_auto_responder_return=Edit User
+
+
+
+
+
