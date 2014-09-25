@@ -67,14 +67,20 @@ sub use_addExampleInputText {
     use_getObject();
     $functions{addExampleInputText}=qq~ 
     function addExampleInputText(fieldId, exampleValue) {
-        getObject( fieldId ).onchange = function() {
+
+        field = getObject( fieldId );
+        field.onblur = function() {
             if ( !this.value ) {
                 this.value = exampleValue;
                 this.style.color = "#A0A0A0";
-            } else {
+            }
+        };
+        field.onfocus = function() {
+            if (exampleValue == this.value) {
+                this.value = "";
                 this.style.color = "#000000";
             }
-        }
+        };
     }
     \n~;
 }
@@ -107,7 +113,7 @@ sub use_addAutoSubmit {
     function addAutoSubmit(sourceId, formId) {
         getObject( sourceId ).onchange = function() {
             getObject( formId ).submit();
-        }
+        };
     }
     \n~;
 }
@@ -139,7 +145,7 @@ sub use_addAutoClick {
     function addAutoClick(sourceId, proxyBtn) {
         getObject(sourceId).onchange = function() {
             getObject(proxyBtn).click();
-        }
+        };
     }
     \n~;
 }
