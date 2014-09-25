@@ -19,16 +19,8 @@ sub seam_domain_select_form {
 
     # its okay if $default_domain_id is the empty string or undefined
     $str_value .= seam_domain_selector( $default_domain, $domain_field_id );
-        
-    #$str_value .= qq~ 
-    #<script type="text/javascript"> 
-    #getObject("$domain_field_id").onchange = function() {
-    #    getObject("$form_id").submit();
-    #};
-    #</script>~;
 
     $str_value .= qq~<input type="submit" value="Update Domain">~;
-
 
     $str_value .= ui_form_end();
     return $str_value;
@@ -66,6 +58,8 @@ sub seam_add_forwarder_form {
     local $domain = get_param( $_[1] );
     local $form_action = get_param( $_[2], "add_forwarder.cgi" );
     local $form_id = get_param( $_[3], "addForwarderForm" );
+
+    seam_js::exampleInputText( "destination", 'user@somewhere.net' );
 
     local $str_value;
     $str_value .= ui_form_start($form_action, "POST", undef, "id=\"$form_id\"");

@@ -42,6 +42,44 @@ sub use_getObject {
     \n~;
 }
 
+=head2 use_addExampleInputText()
+
+    Adds JavaScript functionality for automatic-form-submission. This function
+    will automatically use getObject and its dependencies if they are not 
+    already being used.
+
+    Example invokation:
+    
+        seam_js::use_addInputTextExample();
+        print seam_js::compile();
+
+    Results in the following JavaScript:
+         
+        function addAutoSubmit(sourceId, formId) {
+            ...
+        }
+        function getObject(domId) {
+            ...
+        }   
+
+=cut
+sub use_addExampleInputText {
+    use_getObject();
+    $functions{addExampleInputText}=qq~ 
+    function addExampleInputText(fieldId, exampleValue) {
+        getObject( fieldId ).onchange = function() {
+            if ( !this.value ) {
+                this.value = exampleValue;
+                this.style.color = "#A0A0A0";
+            } else {
+                this.style.color = "#000000";
+            }
+        }
+    }
+    \n~;
+}
+
+
 =head2 use_addAutoSubmit()
 
     Adds JavaScript functionality for automatic-form-submission. This function
@@ -107,6 +145,42 @@ sub use_addAutoClick {
 }
 
 
+
+=head2 exampleInputText()
+
+    Adds JavaScript functionality for automatic-form-submission. This function
+    will automatically use getObject and its dependencies if they are not 
+    already being used.
+
+    Example invokation:
+    
+        seam_js::exampleInputText("emailField", "you@example.net");
+        print seam_js::compile();
+
+    Results in the following JavaScript:
+         
+        function addInputTextExample(sourceId, formId) {
+            ...
+        }
+        function getObject(domId) {
+            ...
+        }   
+        addInputTextExample(source
+
+=cut
+sub exampleInputText {
+    use_addExampleInputText();  # import the required library
+    
+    my $field_id = $_[0];
+    my $example_value = $_[1];
+
+    $statements{'exampleInputText'} .= qq~
+    addExampleInputText("$field_id", "$example_value");
+    \n~;
+
+}
+
+
 =head2 autoSubmit(source_id, form_id)
 
     Appends an invokation of 'autoSubmit' for the event-source and form 
@@ -139,7 +213,7 @@ sub autoSubmit {
     my $form_id = $_[1];
 
     $statements{'autoSubmit'} .= qq~
-    addAutoSubmit("$source_id",, "$form_id");
+    addAutoSubmit("$source_id", "$form_id");
     \n~;
 }
 
