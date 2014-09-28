@@ -6,7 +6,7 @@
 use CGI;
 
 require 'seam-forms-lib.pl';
-require 'seam-js-lib.pl';
+require 'pjsmanager.pl';
 
 my $cgi = CGI->new();
 
@@ -25,5 +25,6 @@ print seam_domain_select_form( undef, undef, $domain );
 print seam_user_select_form( $domain );
 
 
-# Include javascript functionality
-print seam_js::compile(1);
+# Include javascript functionality (with headers) for 
+# the domain-select and user-select forms
+print pjsmanager::compile( 1 );

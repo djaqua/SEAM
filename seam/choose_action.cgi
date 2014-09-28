@@ -3,7 +3,7 @@
 
 use CGI;
 require 'seam-forms-lib.pl';
-require 'seam-js-lib.pl';
+require 'pjsmanager.pl';
 
 my $cgi = CGI->new();
 
@@ -24,5 +24,6 @@ print seam_add_forwarder_form( $user, $domain );
 # Render a form for changing a password which submits to update_password.cgi
 print seam_update_password_form( $user );
 
-# Include javascript functionality
-print seam_js::compile(1);
+# Include javascript functionality (with headers) for the 
+# various forms within this script
+print pjsmanager::compile( 1 );

@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 require "seam-ui-lib.pl";
-require "seam-js-lib.pl";
+require "pjsmanager.pl";
 
 =head2 seam_domain_select_form(form_action, form_id, default_domain)
 =cut
@@ -12,7 +12,7 @@ sub seam_domain_select_form {
     local $default_domain = get_param( $_[2] );
     local $domain_field_id = get_param( $_[3], "domain" );
     
-    seam_js::autoSubmit( $domain_field_id, $form_id );
+    pjsmanager::valueChangeAutoSubmit( $domain_field_id, $form_id );
 
     local $str_value;
     $str_value .= ui_form_start($form_action, "POST", undef, "id=\"$form_id\"");
@@ -37,7 +37,7 @@ sub seam_user_select_form {
     local $default_user = get_param( $_[3] );
     local $user_field_id = get_param( $_[4], "user" );
 
-    seam_js::autoSubmit( $user_field_id, $form_id );
+    pjsmanager::valueChangeAutoSubmit( $user_field_id, $form_id );
     
     local $str_value;                                                   
     $str_value .= ui_form_start($form_action, "POST", undef, "id=\"$form_id\"");
@@ -59,7 +59,7 @@ sub seam_add_forwarder_form {
     local $form_action = get_param( $_[2], "add_forwarder.cgi" );
     local $form_id = get_param( $_[3], "addForwarderForm" );
 
-    seam_js::exampleInputText( "destination", 'user@somewhere.net' );
+    pjsmanager::exampleInputText( "destination", 'user@somewhere.net' );
 
     local $str_value;
     $str_value .= ui_form_start($form_action, "POST", undef, "id=\"$form_id\"");
