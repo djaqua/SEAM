@@ -18,7 +18,12 @@ add_auto_responder_return=Edit User
 
 
 
-
 domains_add=Add a new domain.
 domains_domain=Mailserver Domain
 domains_delete=Delete Selected
+
+users_add=Add a new user.
+users_username=Domain User
+users_autoresponse=Autoresponse
+users_forwards=Forwarding Addresses
+users_delete=Delete Selected
