@@ -42,3 +42,5 @@ foreach my $entry (@users) {
 print &ui_columns_end();
 print &ui_links_row( \@table_links );
 print &ui_form_end( [[ "delete", $text{'users_delete'}]] );
+
+&ui_print_footer("", $text{'edit_domain_return'});

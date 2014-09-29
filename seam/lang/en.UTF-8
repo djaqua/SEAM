@@ -1,5 +1,5 @@
-index_title=SEAM Select Mailserver Domain
-index_return=Module Configuration
+edit_mailserver_title=Select Mailserver Domain
+edit_mailserver_return=Module Configuration
 
 select_user_title=SEAM Select Mailserver Domain User
 select_user_return=Select Domain
@@ -21,6 +21,9 @@ add_auto_responder_return=Edit User
 domains_add=Add a new domain.
 domains_domain=Mailserver Domain
 domains_delete=Delete Selected
+
+edit_domain_title=Select Mailserver Domain User
+edit_domain_return=Select Mailserver Domain
 
 users_add=Add a new user.
 users_username=Domain User

@@ -7,7 +7,7 @@
 require 'seam-lib.pl';
 
                                                                                
-ui_print_header( undef, $text{'index_title'}, "SEAM" );
+&ui_print_header( undef, $text{'edit_mailserver_title'}, "SEAM" );
 
 # Render a form for selecting a domain which submits to select_user.cgi
 #TODO TODO print seam_domain_select_form();
@@ -35,4 +35,4 @@ print &ui_links_row( \@table_links );
 print &ui_form_end( [[ "delete", $text{'domains_delete'}]] );
 
 
-
+&ui_print_footer("", $text{'edit_mailserver_return'});
