@@ -5,7 +5,6 @@
 # Description: "EditServer" 
 
 require 'seam-lib.pl';
-require 'pjsmanager.pl';
 
                                                                                
 ui_print_header( undef, $text{'index_title'}, "SEAM" );
@@ -36,8 +35,4 @@ print &ui_links_row( \@table_links );
 print &ui_form_end( [[ "delete", $text{'domains_delete'}]] );
 
 
-# Include javascript functionality (with headers) for the domain-select form
-print pjsmanager::compile( 1 ); 
-
-pjsmanager::clear();
 

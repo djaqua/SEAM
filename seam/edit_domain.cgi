@@ -2,12 +2,11 @@
 
 # Filename: index.cgi
 # Author: Drew Jaqua <djaqua@smnet.net>
-# Description: "EditServer" 
+# Description: "EditDomain" 
 
 use CGI;
                                           
 require 'seam-lib.pl';
-require 'pjsmanager.pl';
 
 my $cgi = CGI->new();
 
@@ -33,22 +32,13 @@ print &ui_columns_start( ["",
 @users = get_users( $domain );    
 foreach my $entry (@users) {
     
-#    $entry->{id}
-#    $entry->{username}   
-    
-    
     local @cols = ("<a href='edit_user.cgi?id=$entry->{id}'>$entry->{username}</a>",
-                   "",
-                   "");
+                   "",  # TODO query autoresponse details; dates/active etc
+                   ""); # TODO query forwarding addresses for current user 
     print &ui_checked_columns_row(\@cols, \@col_attrs, "d", 0);
 }
-
 
 
 print &ui_columns_end();
 print &ui_links_row( \@table_links );
 print &ui_form_end( [[ "delete", $text{'users_delete'}]] );
-
-
-# Include javascript functionality (with headers) for the domain-select form
-print pjsmanager::compile( 1 ); 
