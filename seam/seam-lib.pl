@@ -38,6 +38,14 @@ my $select_user_by_id_sql = qq~ SELECT id, domain, username
                                       WHERE id=__ID__~; 
 
 
+=head2 get_param(argument, default_value)
+=cut
+sub get_param {
+    return (defined $_[0] and $_[0] ne "") ? $_[0] : defined $_[1] ? $_[1] : "";
+}
+
+
+
 =head2 get_database()
     Returns the active database connection if one exists, otherwise establishes
     a new one.
