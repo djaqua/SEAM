@@ -11,20 +11,22 @@ print ui_print_header( "", $text{'index_title'}, "SEAM", undef, 1, 1);
 my $cgi = CGI->new();
 
 
+local $user = $cgi->param( 'user_id' );
+local $action = $cgi->param( 'actionBtn' );
 
-local $source_domain = $cgi->param('domain'); 
+if ($text{'users_delete'} eq $action) {
 
-local $selected_user_id = $cgi->param('user');
-local $source_username = get_user_by_id($selected_user_id)->{'username'};
+    print &ui_form_start( "delete_user.cgi" );
+    print &ui_hidden( "user", $user );
+    print &ui_form_end( [[ "actionBtn", $text{'users_delete_confirm'}]] );
+    
+} elsif ($text{'users_delete_confirm'} eq $action) {
+    
+    # TODO delete the user
+    print "TODO: write SQL to delete a user";
+}
 
-local $destination_username = $cgi->param('destination');
 
-
-
-add_forwarder( $source_domain, $source_username, $destination_username );
-get_database()->disconnect();
-print qq~ Successfully created forward from $source_username to 
-          $destination_username.<br>\n~;
 
 print ui_print_footer( "", $text{'index_return'},);
 

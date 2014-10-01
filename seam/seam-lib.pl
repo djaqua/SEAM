@@ -28,15 +28,18 @@ my $update_password_sql = qq~ UPDATE virtual_users
                               WHERE id=__ID__
                             ~;
 
-my $insert_alias_sql = qq~ INSERT INTO virtual_aliases 
-                                (domain, source, destination) 
-                           VALUES(__DOMAIN__, "__SOURCE__", "__DESTINATION__") 
+my $insert_alias_sql = qq~ INSERT INTO virtual_aliases (domain, 
+                                                        source, 
+                                                        destination) 
+                           VALUES (__DOMAIN__, "__SOURCE__", "__DESTINATION__") 
                          ~;
 
 my $select_user_by_id_sql = qq~ SELECT id, domain, username
                                       FROM virtual_users 
                                       WHERE id=__ID__~; 
 
+my $insert_domain_sql = qq~ INSERT INTO virtual_domains (name) 
+                            VALUES (__NAME__) ~;
 
 =head2 get_param(argument, default_value)
 =cut
@@ -138,6 +141,19 @@ sub add_forwarder {
         $stmt->finish();
     }
 }
+sub add_domain {
+    local $domain_name = $_[0];
+
+    local $sql = $insert_alias_sql;
+    
+    if ($sql =~ s/__NAME__/$domain_name/g) {
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~
+            "Whoops, $DBI::errstr";
+        ~;
+        $stmt->finish();
+    }
+}
 
 =head2 get_user_by_id(user_id)
     Returns an id/domain/username hash for a virtual user specified by user_id.
@@ -199,3 +215,4 @@ while (<CONF>) {
                                                                                 
 }                                                                               
 close(CONF);  
+
