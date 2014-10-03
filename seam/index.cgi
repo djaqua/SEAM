@@ -13,7 +13,7 @@ require 'seam-lib.pl';
 
 @table_links = ( &select_all_link("domain_id", 0), 
                 &select_invert_link("domain_id", 0),
-                &ui_link("edit_domain.cgi?domain_id=new", $text{'domains_add'}) );
+                &ui_link("add_domain.cgi", $text{'domains_add'}) );
 @col_attrs = ("width=5");
 
 print &ui_form_start( "delete_domain.cgi" );

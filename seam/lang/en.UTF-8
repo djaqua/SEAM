@@ -1,3 +1,4 @@
+cancel=Cancel
 edit_mailserver_title=Select Mailserver Domain
 edit_mailserver_return=Module Configuration
 
@@ -25,9 +26,14 @@ add_auto_responder_return=Edit User
 
 
 domains_add=Add a new domain.
+domains_add_proceed=Proceed
+
 domains_domain=Mailserver Domain
 domains_delete=Delete Selected
 domains_delete_confirm=Confirm
+
+delete_domain_title=Delete Mailserver Domain
+delete_domain_return=Mailserver Domains
 
 edit_domain_title=Select Mailserver Domain User
 edit_domain_return=Select Mailserver Domain
@@ -38,3 +44,8 @@ users_autoresponse=Autoresponse
 users_forwards=Forwarding Addresses
 users_delete=Delete Selected
 users_delete_confirm=Confirm
+
+
+add_domain_title=New Mailserver Domain
+add_domain_return=Mailserver Domains
+add_user_title=New Mailserver Domain User

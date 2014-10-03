@@ -14,14 +14,17 @@ init_config();
 
 my $database;
 
+my $select_by_id = "WHERE id=__ID__"; 
+my $select_by_name = "WHERE name=__NAME__"; 
+
 my $select_domains_sql = qq~ SELECT id, name 
                              FROM virtual_domains 
                            ~;
 
-my $select_users_sql = qq~ SELECT id, username 
-                           FROM virtual_users 
-                           WHERE domain=__DOMAIN__ 
-                         ~;
+my $select_users_by_domain_id_sql = qq~ SELECT id, username 
+                                        FROM virtual_users 
+                                        WHERE domain=__DOMAIN__ 
+                                      ~;
 
 my $update_password_sql = qq~ UPDATE virtual_users 
                               SET password=ENCRYPT("__PASSWORD__") 
@@ -36,10 +39,26 @@ my $insert_alias_sql = qq~ INSERT INTO virtual_aliases (domain,
 
 my $select_user_by_id_sql = qq~ SELECT id, domain, username
                                       FROM virtual_users 
-                                      WHERE id=__ID__~; 
+                                      WHERE id=__ID__ ~; 
 
 my $insert_domain_sql = qq~ INSERT INTO virtual_domains (name) 
-                            VALUES (__NAME__) ~;
+                            VALUES ("__NAME__") ~;
+
+# used by add_domain() to retrieve the 
+# id of a newly created domain by name
+my $select_domain_by_name_sql = qq~ SELECT id, name 
+                                    FROM virtual_domains 
+                                    WHERE name="__NAME__" ~;
+
+# Used to retrieve the name of domain by id throughout 
+# the 
+my $select_domain_by_id_sql = qq~ SELECT id, name 
+                                    FROM virtual_domains 
+                                    WHERE id=__ID__ ~;
+
+my $delete_domain_sql = qq~ DELETE FROM virtual_domains 
+                            WHERE id=__ID__ ~;
+
 
 =head2 get_param(argument, default_value)
 =cut
@@ -59,6 +78,24 @@ sub get_database {
     }
 
     return $database;        
+}
+
+sub get_domain_by_id {
+    
+    local $id = $_[0];
+    local $sql = $select_domain_by_id_sql;
+    
+    if ($sql =~ s/__ID__/$id/g) {
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~
+            "Whoops, $DBI::errstr"
+        ~;
+        
+        @fields = $stmt->fetchrow_array;
+
+        $stmt->finish();
+        return {'id'=>$fields[0], 'name'=>$fields[1]};
+    }
 }
 
 =head2 update_password(user_id, password)
@@ -141,10 +178,11 @@ sub add_forwarder {
         $stmt->finish();
     }
 }
-sub add_domain {
-    local $domain_name = $_[0];
 
-    local $sql = $insert_alias_sql;
+sub add_domain {
+    
+    local $domain_name = $_[0];
+    local $sql = $insert_domain_sql;
     
     if ($sql =~ s/__NAME__/$domain_name/g) {
         local $stmt = get_database()->prepare( $sql );
@@ -153,6 +191,34 @@ sub add_domain {
         ~;
         $stmt->finish();
     }
+
+    $sql = $select_domain_by_name_sql;
+    if ($sql =~ s/__NAME__/$domain_name/g) {
+        
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~
+            "Whoops, $DBI::errstr";
+        ~;
+
+        @fields = $stmt->fetchrow_array;
+        $stmt->finish();
+        return {'id'=>$fields[0], 'name'=>$fields[1]}; 
+    }
+}
+sub delete_domain {
+     
+    local $domain_id = $_[0];
+    local $sql = $delete_domain_sql;
+     
+    if ($sql =~ s/__ID__/$domain_id/g) {
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~
+            "Whoops, $DBI::errstr";
+        ~;
+        $stmt->finish();
+    }
+
+
 }
 
 =head2 get_user_by_id(user_id)
