@@ -5,45 +5,47 @@ use CGI;
 use DBI;
 require 'seam-lib.pl';
 
-print ui_print_header( "", $text{'index_title'}, "SEAM", undef, 1, 1);
  
 
 my $cgi = CGI->new();
 
-my $domain = $cgi->param('domain');
+my $actionBtn = $cgi->param('actionBtn');
+my $user = get_user_by_id( $cgi->param('uId') );
+my $password1 = $cgi->param('password1');
+my $password2 = $cgi->param('password2');
 
 
-if (defined $cgi->param('updatePasswordBtn')) {
-
-    my $password1 = $cgi->param('password1');
-    my $password2 = $cgi->param('password2');
-    my $user = $cgi->param('user');
-
+if ($text{save} eq $actionBtn) {
+    
     if ($password1 eq $password2) {
-#   print $username; 
-       update_password($user, $password1);
-       print "Password updated successfully.";    
-       get_database()->disconnect();
+        update_password($user->{id}, $password1);
+        redirect("edit_domain.cgi?dId=$user->{domain}");
     } else {
-        # TODO: come back and do this with AJAX
-        print "password mismatch, try again!";
+
+        ui_print_header( "", $text{'index_title'}, "SEAM", undef, 1, 1);
+        ui_print_footer( "", $text{'index_return'},);
+
     }
-} elsif (defined $cgi->param('addForwarderBtn')) {
-    local $source_domain = $cgi->param('domain'); 
 
-    local $selected_user_id = $cgi->param('user');
-    local $source_username = get_user_by_id($selected_user_id)->{'username'};
-    local $destination_username = $cgi->param('destination');
+} elsif ($text{cancel} eq $actionBtn) {
 
+    redirect("edit_user.cgi?uId=$user->{id}");
 
+} else {
+    ui_print_header( "", $text{'index_title'}, "SEAM", undef, 1, 1);
+ 
+    print &ui_form_start("update_password.cgi", "POST");
+    print &ui_hidden("uId", $user->{id});
+    print "<p>Please provide a new password here: " . &ui_password("password1") . "</p>";
 
-    add_forwarder( $source_domain, $source_username, $destination_username );
-    get_database()->disconnect();
-    print qq~ Successfully created forward from $source_username to 
-              $destination_username.<br>\n~;
+    print "<p>Please confirm the password here: " . &ui_password("password2") . "</p>";
+    print &ui_form_end( [["actionBtn", $text{save}],
+                         ["actionBtn", $text{cancel}]] );
+
+    ui_print_footer( "", $text{'index_return'},);
 }
 
-print ui_print_footer( "", $text{'index_return'},);
+
 
  
 

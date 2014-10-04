@@ -16,7 +16,7 @@ if ($text{'domains_add_proceed'} eq $actionBtn) {
    
     $domain = add_domain( $domainName );
     
-    redirect("edit_domain.cgi?domain_id=$domain->{id}");
+    redirect("edit_domain.cgi?dId=$domain->{id}");
      
 } elsif ($text{'cancel'} eq $actionBtn) {
     

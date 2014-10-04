@@ -41,8 +41,18 @@ my $select_user_by_id_sql = qq~ SELECT id, domain, username
                                       FROM virtual_users 
                                       WHERE id=__ID__ ~; 
 
+my $select_user_by_username_sql = qq~ SELECT id, domain, username
+                                      FROM virtual_users 
+                                      WHERE username="__USERNAME__" ~; 
+
+
 my $insert_domain_sql = qq~ INSERT INTO virtual_domains (name) 
                             VALUES ("__NAME__") ~;
+
+
+my $insert_user_sql = qq~ INSERT INTO virtual_users (domain, username, password) 
+                            VALUES (__DOMAIN__, "__USERNAME__", "__PASSWORD__") 
+                        ~;
 
 # used by add_domain() to retrieve the 
 # id of a newly created domain by name
@@ -59,7 +69,9 @@ my $select_domain_by_id_sql = qq~ SELECT id, name
 my $delete_domain_sql = qq~ DELETE FROM virtual_domains 
                             WHERE id=__ID__ ~;
 
-
+my $delete_users_by_domain_id_sql = qq~ DELETE FROM virtual_users 
+                                        WHERE domain=__DOMAIN__ 
+                                      ~;
 =head2 get_param(argument, default_value)
 =cut
 sub get_param {
@@ -121,21 +133,20 @@ sub update_password {
     virtual domain specified by domain_id.
 =cut
 sub get_users {
-    
-    local @users = ();
-    local $sql = $select_users_sql;
-    
-    if ($sql =~ s/__DOMAIN__/$_[0]/g) {
-        $stmt = get_database()->prepare( $sql );
-        $stmt->execute or die qq~ 
-            "Whoops, $DBI::errstr"                                                      
-        ~;
-        while (@fields = $stmt->fetchrow_array) {                                  
-            push( @users, {'id'=>$fields[0], 'username'=>$fields[1]} );
-        }
-        $stmt->finish();
-    }
-    return @users;    
+   local @users = ();
+   local $sql = $select_users_by_domain_id_sql;
+   if ($sql =~ s/__DOMAIN__/$_[0]/g) {
+       $stmt = get_database()->prepare( $sql );
+       $stmt->execute or die qq~
+       "Whoops, $DBI::errstr"
+       ~;
+       while (@fields = $stmt->fetchrow_array) {
+           push( @users, {'id'=>$fields[0], 
+                          'username'=>$fields[1]} );
+       }
+       $stmt->finish();
+   }
+   return @users;
 }
 
 =head2 get_domains()
@@ -205,11 +216,54 @@ sub add_domain {
         return {'id'=>$fields[0], 'name'=>$fields[1]}; 
     }
 }
+
+sub add_user {
+    
+    local $username = $_[0];
+    local $domain_id = $_[1];
+    local $password = $_[2];
+
+    local $sql = $insert_user_sql;
+    
+    if ($sql =~ s/__USERNAME__/$username/g
+    and $sql =~ s/__DOMAIN__/$domain_id/g 
+    and $sql =~ s/__PASSWORD__/$password/g) {
+   
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~
+            "Whoops, $DBI::errstr";
+        ~;
+        $stmt->finish();
+    }
+
+    $sql = $select_user_by_username_sql;
+    if ($sql =~ s/__USERNAME__/$username/g) {
+        
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~
+            "Whoops, $DBI::errstr";
+        ~;
+
+        @fields = $stmt->fetchrow_array;
+        $stmt->finish();
+        return {'id'=>$fields[0], 'username'=>$fields[1]}; 
+    }
+}
 sub delete_domain {
      
     local $domain_id = $_[0];
-    local $sql = $delete_domain_sql;
+
+    local $sql = $delete_users_by_domain_id_sql;
+    if ($sql =~ s/__DOMAIN__/$domain_id/g) {
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~
+            "Whoops, $DBI::errstr";
+        ~;
+        $stmt->finish();
+   
+    }
      
+    $sql = $delete_domain_sql;
     if ($sql =~ s/__ID__/$domain_id/g) {
         local $stmt = get_database()->prepare( $sql );
         $stmt->execute or die qq~
