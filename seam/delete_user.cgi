@@ -7,17 +7,32 @@ require 'seam-lib.pl';
 
 @users = split(/\0/, $in{'uId'});   
 
+my $delete_user_sql = qq~ DELETE FROM virtual_users WHERE id=__ID__ ~;
+
 
 #local $user = get_user_by_id($in{'uId'});
 
-if ($text{'proceed'} eq $in{actionBtn}) {
+if ($text{'proceed'} eq $in{'actionBtn'}) {
     
     &ui_print_header( "", $text{'index_title'}, "SEAM", undef, 1, 1);
-       
-    # TODO delete the user
-    print "TODO: write SQL to delete a user";
+
+#    print "Deleting uIds from '$in{uId}'";        
+    for my $uId (@users) {
+#        print "Deleting user with id '$uId'";
+        local $sql = $delete_user_sql;
+        if ($sql =~ s/__ID__/$uId/g) {
+            print "Deleting user with id '$uId'";
+            local $stmt = get_database()->prepare( $sql );
+            $stmt->execute or die qq~
+                "Whoops, $DBI::errstr";
+            ~;
+            $stmt->finish();
+        }
+    }
+     
+#    redirect("edit_mailserver.cgi");    
     
-    &ui_print_footer( "edit_mailserver.cgi?dId=$user->{domain}", $text{'index_return'},);
+#    &ui_print_footer( "edit_mailserver.cgi?dId=$user->{domain}", $text{'index_return'},);
    
 } elsif ($text{cancel} eq $in{actionBtn}) {
     redirect("edit_mailserver.cgi?dId=$user->{domain}");
