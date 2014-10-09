@@ -10,7 +10,7 @@
 BEGIN { push(@INC, ".."); };
 use DBI;
 use WebminCore;
-init_config();
+&init_config();
 
 my $database;
 
@@ -114,11 +114,12 @@ sub get_domain_by_id {
     Updates the password for a user specified by 'id'.
 =cut
 sub update_password {
-    
+    local $user = $_[0];
+    local $password = $_[1];
     local $sql = $update_password_sql;
     
-    if ($sql =~ s/__PASSWORD__/$_[1]/g 
-    and $sql =~ s/__ID__/$_[0]/g) {
+    if ($sql =~ s/__PASSWORD__/$password/g 
+    and $sql =~ s/__ID__/$user/g) {
         local $stmt = get_database()->prepare( $sql );                        
         $stmt->execute or die qq~                                                       
             "Whoops, $DBI::errstr"                                                      
@@ -335,4 +336,4 @@ while (<CONF>) {
                                                                                 
 }                                                                               
 close(CONF);  
-
+1
