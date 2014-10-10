@@ -36,6 +36,6 @@ if ($text{'proceed'} eq $actionBtn) {
     print &ui_form_end( [[ "actionBtn", $text{'proceed'}], 
                          [ "actionBtn", $text{'cancel'}]] );
 
-    &ui_print_footer("edit_domain.cgi?dId=$user->{domain}", $text{'add_user_return'});
+    &ui_print_footer("edit_domain.cgi?dId=$domainId", $text{'add_user_return'});
 } 
 
