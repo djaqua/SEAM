@@ -8,7 +8,7 @@ require './seam-lib.pl';
                                                                                 
 if ($text{domains_delete} eq $in{actionBtn}) {                                  
                                                                                 
-    &ui_print_header( undef, $text{'delete_domain_title'}, "SEAM", undef, 1
+    &ui_print_header( undef, $text{'delete_domain_title'}, "SEAM", undef, 1 );
                                                                                 
     print &ui_form_start( "delete_domain.cgi" );                                
                                                                                 

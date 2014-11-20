@@ -19,11 +19,13 @@ my $select_by_name = "WHERE name=__NAME__";
 
 my $select_domains_sql = qq~ SELECT id, name 
                              FROM virtual_domains 
+                             ORDER BY name
                            ~;
 
 my $select_users_by_domain_id_sql = qq~ SELECT id, username 
                                         FROM virtual_users 
-                                        WHERE domain=__DOMAIN__ 
+                                        WHERE domain=__DOMAIN__
+                                        ORDER BY username 
                                       ~;
 
 my $update_password_sql = qq~ UPDATE virtual_users 
