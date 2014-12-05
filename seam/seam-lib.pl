@@ -65,8 +65,12 @@ my $select_domain_by_name_sql = qq~ SELECT id, name
 # Used to retrieve the name of domain by id throughout 
 # the 
 my $select_domain_by_id_sql = qq~ SELECT id, name 
-                                    FROM virtual_domains 
-                                    WHERE id=__ID__ ~;
+                                  FROM virtual_domains 
+                                  WHERE id=__ID__ ~;
+
+my $select_forwards_by_user_sql = qq~ SELECT id, domain, source, destination
+                                      FROM virtual_aliases 
+                                      WHERE source="__SOURCE__" ~;
 
 my $delete_domain_sql = qq~ DELETE FROM virtual_domains 
                             WHERE id=__ID__ ~;
@@ -277,6 +281,28 @@ sub delete_domain {
 
 
 }
+
+=head2 get_forwarding_addresses(username)
+    Returns an id/domain/username hash for a virtual user specified by user_id.
+=cut
+sub get_forwarding_addresses {
+        
+    local $sql = $select_forwards_by_user_sql;
+    
+    if ($sql =~ s/__SOURCE__/$_[0]/g) {
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~ 
+            "Whoops, $DBI::errstr"                                                      
+        ~;
+        @fields = $stmt->fetchrow_array;
+        $stmt->finish();
+        
+        return {'id'=>$fields[0], 'domain'=>$fields[1], 'source'=>$fields[2], 'destination'=>$fields[3]}; 
+    }
+    return undef;    
+}
+
+
 
 =head2 get_user_by_id(user_id)
     Returns an id/domain/username hash for a virtual user specified by user_id.

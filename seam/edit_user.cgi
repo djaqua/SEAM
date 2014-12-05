@@ -3,26 +3,15 @@
 use CGI;
 
 require "seam-lib.pl";
+&ReadParse();
 
 ui_print_header( undef, $text{'edit_user_title'}, "SEAM", undef, 1, 1 );
 
 my $cgi = CGI->new();
 
-my $user = get_user_by_id( $cgi->param('uId') );
+my $user = get_user_by_id( $in{uId} );
 
 
-
-print &ui_hr();
-print &ui_subheading($text{'edit_user_autoresponse'});
-# TODO print &ui_textarea("autoresponse", "", 4, 40);
-include( "test" );
-
-
-print &ui_hr();
-
-print &ui_subheading($text{'edit_user_forwards'});
-
-print &ui_hr();
 
 print &ui_subheading($text{'edit_user_password'});
 print qq~
@@ -40,6 +29,48 @@ print "<p>Please provide a new password here: " . &ui_password("password1") . "<
 print "<p>Please confirm the password here: " . &ui_password("password2") . "</p>";
 print &ui_form_end( [["actionBtn", $text{save}],
                      ["actionBtn", $text{cancel}]] );
-print &ui_hr();
+
+print &ui_hr();#----------------------------------------------------------------
+
+print &ui_subheading($text{'edit_user_autoresponse'});
+# TODO print &ui_textarea("autoresponse", "", 4, 40);
+#include( "test" );
+
+
+# print &ui_hr();#----------------------------------------------------------------
+
+print &ui_subheading($text{'edit_user_forwards'});
+                                                                              
+                                                                                
+@table_links = ( &select_all_link("uId", 0),                                    
+                 &select_invert_link("uId", 0),                                 
+                 &ui_link("add_forwarding_address.cgi?uId=$in{uId}", $text{'add_forwarding_address'}) );
+                                                                                
+@col_attrs = ("width=5");                                                       
+                                                                                
+                                                                                
+# Render a form for selecting a domain which submddits to select_user.cgi       
+print &ui_form_start( "delete_forwarding_address.cgi" );                        
+print &ui_links_row( \@table_links );                                           
+print &ui_columns_start( ["", $text{'users_forwards'}], 50, 0, \@col_attrs );   
+                                                                                
+$user = get_user_by_id( $in{uId} );                                             
+
+@forwards = get_forwarding_addresses( $user->{username} );
+                                                                                
+#foreach my $cur (@users) {                                                     
+                                                                                
+#    local @cols = ("<a href='edit_user.cgi?uId=$cur->{id}'>$cur->{username}</a>",
+#                   "",  # TODO query autoresponse details; dates/active etc    
+#                   ""); # TODO query forwarding addresses for current user     
+#    print &ui_checked_columns_row(\@cols, \@col_attrs, "uId", $cur->{id});     
+#}                                                                              
+                                                                                
+                                                                                
+print &ui_columns_end();                                                        
+print &ui_links_row( \@table_links );                                           
+print &ui_form_end( [[ "actionBtn", $text{'delete_forwarding_address'}]] );     
+
+
 
 &ui_print_footer("edit_domain.cgi?dId=$user->{domain}", $text{'add_user_return'});

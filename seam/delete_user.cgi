@@ -46,7 +46,7 @@ if ($text{'proceed'} eq $in{'actionBtn'}) {
     for my $uId (@users) {
         print &ui_hidden( "uId", $uId );
         $user = get_user_by_id( $uId );
-        $usernames .= $user->{username} . ", ";
+        $usernames .= "$user->{username}" . ", ";
     }
 
     $usernames = substr( $usernames, 0, length($usernames)-2 );
