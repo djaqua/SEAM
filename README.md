@@ -4,11 +4,15 @@ Simple Email Administration Module for Webmin/Virtualmin.
 
 Features
 ========
+* Add & Delete Mailserver Domains
+
+* Add & Delete Mailserver Domain Users 
+
 * Update Passwords for Users
 
-* Add, Edit, & Delete Forwards for Users
+* Add & Delete Aliases (Forwarding Addresses) for Users
 
-* Add, Edit, & Delete Auto-Responders for Users
+* Edit Auto-Responders for Users
 
 Functional Requirements
 =======================
@@ -20,19 +24,31 @@ Functional Requirements
 
 Non-Functional Requirements
 ===========================
-* forms are _submitted via POST_ to the script in which they are written for 
-  sanitation and _redirected via GET_ to the appropriate action handler.
-  - has the added benefit of centralizing the management of CGI variables and
-    thus limiting the scope of their destruction.  
-  - has the consequence of session-variable over-head, but not so terrible
-    since this is not going to undergo frequent usage by every user. 
-
-* _session variables_ used for script-to-script (eg index to select-user) 
-  communication since _there are no POST-redirect capabilities_
-
-* _http variables_ for script-to-self (eg index to index) communication
-  since this will be the primary style of form-submission. 
-  - has the added benefit of keeping sanitized variables separate from 
-    dirty variables.
+* Should be configurable to work with custom Postfix/Dovecot virtual 
+    mailserver configurations 
 
 
+Bugs that need to be fixed
+==========================
+* Should not be able to delete 0 domains
+
+* Deleting 0 domains & Cancel does NOT cause perl execution failure; bug? 
+
+* Should not be able to delete 0 users
+
+* Deleting 0 users & Cancel causes perl execution failure 
+  in seam-lib.pl at line 329
+
+* Deleting domains (0+) & Proceed leads to redirect output 
+
+* Text not showing up on DeleteDomain return 
+
+* Deleting aliases (0+) throws file not found
+    -- in anticipation, should not be able to delete 0 aliases 
+
+
+
+Project Hints
+=============
+* Use Case Diagram is an https://www.draw.io project
+   
