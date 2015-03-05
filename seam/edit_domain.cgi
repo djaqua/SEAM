@@ -14,7 +14,8 @@ my $domainId = $cgi->param('dId');
 
 @table_links = ( &select_all_link("uId", 0), 
                  &select_invert_link("uId", 0),
-                 &ui_link("add_user.cgi?dId=$domainId", $text{'users_add'}) );
+                 &ui_link("add_user.cgi?dId=$domainId", 
+                          $text{'edit_domain_add_user'}) );
 
 @col_attrs = ("width=5");
                                                                                
@@ -41,6 +42,6 @@ foreach my $cur (@users) {
 
 print &ui_columns_end();
 print &ui_links_row( \@table_links );
-print &ui_form_end( [[ "actionBtn", $text{'users_delete'}]] );
+print &ui_form_end( [[ "actionBtn", $text{'edit_domain_delete_users'}]] );
 
-&ui_print_footer("", $text{'edit_domain_return'});
+&ui_print_footer("index.cgi", $text{'edit_mailserver_title'});

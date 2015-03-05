@@ -5,10 +5,8 @@ require 'seam-lib.pl';
 
 &ReadParse();
 
-#@users = split(/\0/, $in{'uId'});   
 @domains = split(/\0/, $in{'dId'});
 
-#my $delete_user_sql = qq~ DELETE FROM virtual_users WHERE id=__ID__ ~;
 
 if ($text{'proceed'} eq $in{'actionBtn'}) {
     
@@ -36,8 +34,7 @@ if ($text{'proceed'} eq $in{'actionBtn'}) {
    
 } elsif ($text{cancel} eq $in{actionBtn}) {
 
-    local $user = get_user_by_id( @users[0] );
-    redirect("edit_domain.cgi?dId=$user->{domain}");
+    redirect("index.cgi");
 
 } else {
 
@@ -59,8 +56,7 @@ if ($text{'proceed'} eq $in{'actionBtn'}) {
     }                                                                           
                                                                                 
     $domainNames = substr( $domainNames, 0, length($domainNames)-2 );      
-                                                                                
-                                                                                
+
     # TODO build a string of domain names selected for deletion                 
     print qq~ <p>WARNING: You are about to delete the following domains: $domainNames</p>
             ~;                                                                  
