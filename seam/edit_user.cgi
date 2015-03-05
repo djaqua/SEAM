@@ -41,7 +41,7 @@ print &ui_hr();#----------------------------------------------------------------
                                                                                 
                                                                                 
 # Render a form for selecting a domain which submddits to select_user.cgi       
-print &ui_form_start( "delete_forwarding_address.cgi" );                        
+print &ui_form_start( "delete_alias.cgi" );                        
 print &ui_links_row( \@table_links );                                           
 print &ui_columns_start( ["", $text{'edit_user_alias_list'}], 50, 0, \@col_attrs );   
                                                                                 

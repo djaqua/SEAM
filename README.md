@@ -37,11 +37,14 @@ Bugs that need to be fixed
 * Should not be able to delete 0 users
 
 * Deleting 0 users & Cancel causes perl execution failure 
-  in seam-lib.pl at line 329
+  in seam-lib.pl at line 329 (uId not being passed along)
 
-* Deleting aliases (0+) throws file not found
-    -- in anticipation, should not be able to delete 0 aliases 
+* In anticipation, should not be able to delete 0 aliases 
 
+* Add alias return-to text not showing up
+
+* Delete alias (0+) + Cancel causes perl execution failure 
+  in seam-lib.pl at line 329 (uId not being passed along)
 
 Project Hints
 =============
