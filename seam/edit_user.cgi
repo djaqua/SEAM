@@ -31,20 +31,11 @@ print &ui_form_end( [["actionBtn", $text{save}],
                      ["actionBtn", $text{cancel}]] );
 
 print &ui_hr();#----------------------------------------------------------------
-
-print &ui_subheading($text{'edit_user_autoresponse'});
-# TODO print &ui_textarea("autoresponse", "", 4, 40);
-#include( "test" );
-
-
-# print &ui_hr();#----------------------------------------------------------------
-
-print &ui_subheading($text{'edit_user_forwards'});
-                                                                              
                                                                                 
 @table_links = ( &select_all_link("uId", 0),                                    
                  &select_invert_link("uId", 0),                                 
-                 &ui_link("add_forwarding_address.cgi?uId=$in{uId}", $text{'add_forwarding_address'}) );
+                 &ui_link("add_alias.cgi?uId=$in{uId}", 
+                          $text{'edit_user_add_alias'}) );
                                                                                 
 @col_attrs = ("width=5");                                                       
                                                                                 
@@ -52,7 +43,7 @@ print &ui_subheading($text{'edit_user_forwards'});
 # Render a form for selecting a domain which submddits to select_user.cgi       
 print &ui_form_start( "delete_forwarding_address.cgi" );                        
 print &ui_links_row( \@table_links );                                           
-print &ui_columns_start( ["", $text{'users_forwards'}], 50, 0, \@col_attrs );   
+print &ui_columns_start( ["", $text{'edit_user_alias_list'}], 50, 0, \@col_attrs );   
                                                                                 
 $user = get_user_by_id( $in{uId} );                                             
 
@@ -69,8 +60,8 @@ $user = get_user_by_id( $in{uId} );
                                                                                 
 print &ui_columns_end();                                                        
 print &ui_links_row( \@table_links );                                           
-print &ui_form_end( [[ "actionBtn", $text{'delete_forwarding_address'}]] );     
+print &ui_form_end( [[ "actionBtn", $text{'edit_user_delete_aliases'}]] );     
 
 
 
-&ui_print_footer("edit_domain.cgi?dId=$user->{domain}", $text{'add_user_return'});
+&ui_print_footer("edit_domain.cgi?dId=$user->{domain}", $text{'edit_domain_title'});

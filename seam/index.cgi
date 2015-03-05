@@ -13,12 +13,13 @@ require 'seam-lib.pl';
 
 @table_links = ( &select_all_link("dId", 0), 
                 &select_invert_link("dId", 0),
-                &ui_link("add_domain.cgi", $text{'domains_add'}) );
+                &ui_link("add_domain.cgi", 
+                         $text{'edit_mailserver_add_domain'}) );
 @col_attrs = ("width=5");
 
 print &ui_form_start( "delete_domain.cgi" );
 print &ui_links_row( \@table_links );
-print &ui_columns_start( ["",$text{'domains_domain'}], 50, 0, \@col_attrs );
+print &ui_columns_start( ["",$text{'edit_mailserver_domain_list'}], 50, 0, \@col_attrs );
 
 @domains = get_domains();    
 foreach my $cur (@domains) {
@@ -31,7 +32,7 @@ foreach my $cur (@domains) {
 
 print &ui_columns_end();
 print &ui_links_row( \@table_links );
-print &ui_form_end( [[ "actionBtn", $text{'domains_delete'}]] );
+print &ui_form_end( [[ "actionBtn", $text{'edit_mailserver_delete_domains'}]] );
 
 
 &ui_print_footer("", $text{'edit_mailserver_return'});

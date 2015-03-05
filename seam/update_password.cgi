@@ -23,26 +23,13 @@ if ($text{save} eq $actionBtn) {
     } else {
 
         ui_print_header( "", $text{'index_title'}, "SEAM", undef, 1, 1);
+        # TODO PASSWORD MISMATCH
         ui_print_footer( "", $text{'index_return'},);
 
     }
 
 } elsif ($text{cancel} eq $actionBtn) {
-
     redirect("edit_user.cgi?uId=$user->{id}");
-
-} else {
-    ui_print_header( "", $text{'index_title'}, "SEAM", undef, 1, 1);
- 
-    print &ui_form_start("update_password.cgi", "POST");
-    print &ui_hidden("uId", $user->{id});
-    print "<p>Please provide a new password here: " . &ui_password("password1") . "</p>";
-
-    print "<p>Please confirm the password here: " . &ui_password("password2") . "</p>";
-    print &ui_form_end( [["actionBtn", $text{save}],
-                         ["actionBtn", $text{cancel}]] );
-
-    ui_print_footer( "", $text{'index_return'},);
 }
 
 

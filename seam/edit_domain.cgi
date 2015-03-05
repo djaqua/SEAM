@@ -24,9 +24,10 @@ ui_print_header( undef, $text{'edit_domain_title'}, "SEAM", undef, 1, 1 );
 print &ui_form_start( "delete_user.cgi" );
 print &ui_links_row( \@table_links );
 print &ui_columns_start( ["", 
-                          $text{'users_username'}, 
-                          $text{'users_autoresponse'}, 
-                          $text{'users_forwards'}], 50, 0, \@col_attrs );
+                          $text{'edit_domain_user_list_username'}, 
+                          $text{'edit_domain_user_list_autoresponse'}, 
+                          $text{'edit_domain_user_list_alias'}], 
+                         50, 0, \@col_attrs );
 
 @users = get_users( $domainId );    
 foreach my $cur (@users) {

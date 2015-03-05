@@ -40,6 +40,7 @@ if ($text{'proceed'} eq $actionBtn) {
                          [ "actionBtn", $text{'cancel'}]] );
 
     print pjsmanager::compile(1);
-    &ui_print_footer("edit_domain.cgi?dId=$domainId", $text{'add_user_return'});
+    &ui_print_footer( "edit_domain.cgi?dId=$domainId", 
+                      $text{'edit_domain_title'} );
 } 
 

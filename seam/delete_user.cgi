@@ -1,29 +1,17 @@
 #!/usr/bin/perl
 
-
 require 'seam-lib.pl';
 
 &ReadParse();
 
 @users = split(/\0/, $in{'uId'});   
 
-my $delete_user_sql = qq~ DELETE FROM virtual_users WHERE id=__ID__ ~;
-
 if ($text{'proceed'} eq $in{'actionBtn'}) {
     
     local $user = get_user_by_id( @users[0] );
     
     for my $uId (@users) {
-  
-        local $sql = $delete_user_sql;
-  
-        if ($sql =~ s/__ID__/$uId/g) {
-            local $stmt = get_database()->prepare( $sql );
-            $stmt->execute or die qq~
-                "Whoops, $DBI::errstr";
-            ~;
-            $stmt->finish();
-        }
+        delete_user( $uId );
     }
      
     redirect("edit_domain.cgi?dId=$user->{domain}");    

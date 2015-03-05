@@ -78,6 +78,8 @@ my $delete_domain_sql = qq~ DELETE FROM virtual_domains
 my $delete_users_by_domain_id_sql = qq~ DELETE FROM virtual_users 
                                         WHERE domain=__DOMAIN__ 
                                       ~;
+my $delete_user_by_id_sql = qq~ DELETE FROM virtual_users WHERE id=__ID__ ~;
+
 =head2 get_param(argument, default_value)
 =cut
 sub get_param {
@@ -278,8 +280,19 @@ sub delete_domain {
         ~;
         $stmt->finish();
     }
+}
 
+sub delete_user {
+    
+    local $user_id = $_[0];
 
+    local $sql = $delete_user_by_id_sql;
+    if ($sql =~ s/__ID__/$user_id/g) {
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~
+            "Whoops, $DBI::errstr";
+        ~; 
+    }
 }
 
 =head2 get_forwarding_addresses(username)

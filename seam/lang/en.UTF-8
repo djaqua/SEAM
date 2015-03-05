@@ -1,3 +1,42 @@
+# EditMailserver
+edit_mailserver_title=Edit Mailserver
+edit_mailserver_add_domain=Add a new domain.
+edit_mailserver_domain_list=Mailserver Domain
+edit_mailserver_delete_domains=Delete Selected
+
+# AddDomain
+add_domain_title=Create Mailserver Domain
+
+# DeleteDomain
+delete_domain_title=Confirm Delete Mailserver Domain
+
+
+# EditDomain
+edit_domain_title=Edit Mailserver Domain
+edit_domain_add_user=Add a new user.
+edit_domain_user_list_username=Domain User
+edit_domain_user_list_autoresponse=Autoresponse
+edit_domain_user_list_alias=Forwarding Addresses
+edit_domain_delete_users=Delete Selected
+
+# AddUser
+add_user_title=Create Mailserver Domain User
+
+# EditUser
+edit_user_title=Edit Mailserver Domain User
+edit_user_password=Password
+edit_user_add_alias=Add New Forwarding Address. 
+edit_user_alias_list=Forwarding Addresses
+edit_user_delete_aliases=Delete Selected
+
+
+
+
+
+
+
+
+
 # GENERIC strings
 cancel=Cancel
 proceed=Proceed
@@ -6,7 +45,6 @@ save=Save
 
 # MAILSERVER strings
 
-edit_mailserver_title=Select Mailserver Domain
 edit_mailserver_return=Module Configuration
 
 
@@ -52,14 +90,7 @@ users_delete=Delete Selected
 users_delete_confirm=Confirm
 
 
-add_domain_title=New Mailserver Domain
-add_domain_return=Mailserver Domains
-
-
 # USER strings
-add_user_title=New Mailserver Domain User
-add_user_proceed=Proceed
-add_user_return=Edit Mailserver Domain 
 
 edit_user_title=Edit User Details
 edit_user_autoresponse=Autoresponse
