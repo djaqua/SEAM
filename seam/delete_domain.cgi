@@ -9,25 +9,10 @@ require 'seam-lib.pl';
 
 
 if ($text{'proceed'} eq $in{'actionBtn'}) {
-    
-    &ui_print_header( "", $text{'delete_domain_title'}, "SEAM", undef, 1, 1);
-    
 
     for my $dId (@domains) {
 
         delete_domain( $dId );
-         
-        #local $sql = $delete_domain_sql;
-  
-        #print "Delete domain sql: $delete_domain_sql\n";
-        
-        #if ($sql =~ s/__ID__/$dId/g) {
-        #    local $stmt = get_database()->prepare( $sql );
-        #    $stmt->execute or die qq~
-        #        "Whoops, $DBI::errstr";
-        #    ~;
-        #    $stmt->finish();
-        #}
     }
      
     redirect("index.cgi");    
@@ -41,9 +26,6 @@ if ($text{'proceed'} eq $in{'actionBtn'}) {
     &ui_print_header( "", $text{'delete_domain_title'}, "SEAM", undef, 1, 1);
 
     print &ui_form_start( "delete_domain.cgi" );                               
-
-
-
 
     local $domainNames = "";                                                      
                                                                                 
@@ -63,7 +45,7 @@ if ($text{'proceed'} eq $in{'actionBtn'}) {
     print &ui_form_end( [[ "actionBtn", $text{proceed}],                       
                          [ "actionBtn", $text{cancel}]] );                      
                                                                                 
-    &ui_print_footer( "", $text{'index_return'},);        
+    &ui_print_footer( "index.cgi", $text{'edit_mailserver_title'},);        
  
 }
  

@@ -39,13 +39,8 @@ Bugs that need to be fixed
 * Deleting 0 users & Cancel causes perl execution failure 
   in seam-lib.pl at line 329
 
-* Deleting domains (0+) & Proceed leads to redirect output 
-
-* Text not showing up on DeleteDomain return 
-
 * Deleting aliases (0+) throws file not found
     -- in anticipation, should not be able to delete 0 aliases 
-
 
 
 Project Hints
