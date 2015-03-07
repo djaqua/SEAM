@@ -75,7 +75,8 @@ my $delete_domain_sql = qq~ DELETE FROM virtual_domains
 my $delete_users_by_domain_id_sql = qq~ DELETE FROM virtual_users 
                                         WHERE domain=__DOMAIN__ 
                                       ~;
-my $delete_user_by_id_sql = qq~ DELETE FROM virtual_users WHERE id=__ID__ ~;
+my $delete_user_by_id_sql = qq~ DELETE FROM virtual_users 
+                                WHERE id=__ID__ ~;
 
 my $select_aliases_by_username_sql = qq~ SELECT id, domain, source, destination
                                          FROM virtual_aliases 
@@ -85,7 +86,8 @@ my $select_alias_by_id_sql = qq~ SELECT id, domain, source, destination
                                  FROM virtual_aliases
                                  WHERE id=__ID__
                                ~;
-
+my $delete_alias_by_id_sql = qq~ DELETE FROM virtual_aliases
+                                 WHERE id=__ID__ ~;
 =head2 get_param(argument, default_value)
 =cut
 sub get_param {
@@ -345,8 +347,24 @@ sub delete_user {
         $stmt->execute or die qq~
             "Whoops, $DBI::errstr";
         ~; 
+        $stmt->finish();
     }
 }
+
+sub delete_alias {
+    
+    local $alias_id = $_[0];
+
+    local $sql = $delete_alias_by_id_sql;
+    if ($sql =~ s/__ID__/$alias_id/g) {
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~
+            "Whoops, $DBI::errstr";
+        ~; 
+        $stmt->finish();
+    }
+}
+
 
 
 =head2 get_user_by_id(user_id)

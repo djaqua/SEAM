@@ -24,7 +24,9 @@ $user = get_user_by_username( $alias->{source} );
 
 if ($text{'proceed'} eq $actionBtn) {
   
-#TODO    delete_alias( $in{aId} );
+   for my $aId (@alias_ids) {
+       delete_alias( $aId  );
+   }
    redirect("edit_user.cgi?uId=$user->{id}");
 
     

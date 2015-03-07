@@ -23,7 +23,8 @@ edit_domain_delete_users=Delete Selected
 add_user_title=Create Mailserver Domain User
 
 # EditUser
-edit_user_title=Edit Mailserver Domain User
+edit_user_title=Edit User
+edit_user_desc=Edit Mailserver Domain User $1
 edit_user_password=Password
 edit_user_add_alias=Add New Forwarding Address. 
 edit_user_alias_list=Forwarding Addresses

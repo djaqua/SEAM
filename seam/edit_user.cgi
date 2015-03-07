@@ -5,14 +5,13 @@ use CGI;
 require "seam-lib.pl";
 &ReadParse();
 
-ui_print_header( undef, $text{'edit_user_title'}, "SEAM", undef, 1, 1 );
 
 my $cgi = CGI->new();
 
 my $user = get_user_by_id( $in{uId} );
 
-
-
+$desc = &text( "edit_user_desc", $user->{username} );
+&ui_print_header( $desc, $text{'edit_user_title'}, undef );
                                                                                 
 @table_links = ( &select_all_link("aId", 0),
                  &select_invert_link("aId", 0),                                 
