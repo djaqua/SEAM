@@ -1,13 +1,14 @@
 #!/usr/bin/perl
 
+
 # Filename: index.cgi
 # Author: Drew Jaqua <djaqua@smnet.net>
 # Description: "EditServer" 
 
 require 'seam-lib.pl';
 
-                                                                               
-&ui_print_header( undef, $text{'edit_mailserver_title'}, "SEAM" );
+#my $desc = &text( "edit_mailserver_desc",                                                                                
+&ui_print_header( "", $text{'edit_mailserver_title'}, undef );
 
 # Render a form for selecting a domain which submits to select_user.cgi
 

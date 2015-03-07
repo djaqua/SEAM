@@ -16,7 +16,6 @@ Implemented Features
 Remaining Features, Requirements, & Miscellany
 ==============================================
 * Edit Auto-Responders for Users
-* Any given page should indicate what domain/user is being edited
 * EditDomain still needs to show aliases and autoresponse
 * Go back and remove all the CGI dependencies and use $in{VARNAME} 
   hash built by ReadParse() 
@@ -25,7 +24,7 @@ Remaining Features, Requirements, & Miscellany
 * Stop relying on /root/seam.conf -- use Webmin configuration stuff
 * Cancel/Proceed/Init paradigm may be simplified with a nested if-statement
   which can also help with the perl execution failures
-
+* Clean up headers and links for all pages
 
 Functional Requirements
 =======================
