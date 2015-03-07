@@ -14,6 +14,7 @@ use WebminCore;
 
 my $database;
 
+# TODO build custom queries based on these
 my $select_by_id = "WHERE id=__ID__"; 
 my $select_by_name = "WHERE name=__NAME__"; 
 
@@ -68,10 +69,6 @@ my $select_domain_by_id_sql = qq~ SELECT id, name
                                   FROM virtual_domains 
                                   WHERE id=__ID__ ~;
 
-my $select_forwards_by_user_sql = qq~ SELECT id, domain, source, destination
-                                      FROM virtual_aliases 
-                                      WHERE source="__SOURCE__" ~;
-
 my $delete_domain_sql = qq~ DELETE FROM virtual_domains 
                             WHERE id=__ID__ ~;
 
@@ -79,6 +76,15 @@ my $delete_users_by_domain_id_sql = qq~ DELETE FROM virtual_users
                                         WHERE domain=__DOMAIN__ 
                                       ~;
 my $delete_user_by_id_sql = qq~ DELETE FROM virtual_users WHERE id=__ID__ ~;
+
+my $select_aliases_by_username_sql = qq~ SELECT id, domain, source, destination
+                                         FROM virtual_aliases 
+                                         WHERE source="__USERNAME__"
+                                       ~;
+my $select_alias_by_id_sql = qq~ SELECT id, domain, source, destination
+                                 FROM virtual_aliases
+                                 WHERE id=__ID__
+                               ~;
 
 =head2 get_param(argument, default_value)
 =cut
@@ -176,6 +182,53 @@ sub get_domains {
 
     return @domains;
 }
+
+sub get_aliases {
+
+   local @aliases = ();
+   local $sql = $select_aliases_by_username_sql;
+   if ($sql =~ s/__USERNAME__/$_[0]/g) {
+       $stmt = get_database()->prepare( $sql );
+       $stmt->execute or die qq~
+       "Whoops, $DBI::errstr"
+       ~;
+       while (@fields = $stmt->fetchrow_array) {
+           push( @aliases, {'id'=>$fields[0], 
+                            'domain'=>$fields[1],
+                            'source'=>$fields[2],
+                            'destination'=>$fields[3] } );
+       }
+       $stmt->finish();
+   }
+   return @aliases;
+}
+
+
+sub get_alias {
+ 
+    local $sql = $select_alias_by_id_sql;
+    
+    if ($sql =~ s/__ID__/$_[0]/g) {
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~ 
+            "Whoops, $DBI::errstr"                                                      
+        ~;
+        @fields = $stmt->fetchrow_array;
+        $stmt->finish();
+        
+        return {'id'=>$fields[0], 
+                'domain'=>$fields[1], 
+                'source'=>$fields[2],
+                'destination'=>$fields[3], 
+                }; 
+    }
+
+   return undef;
+}
+
+
+
+
 
 =head2 add_forwarders(domain_id, source_user_id, destination_user_id)
     Adds a forwarder for the spe
@@ -295,27 +348,6 @@ sub delete_user {
     }
 }
 
-=head2 get_forwarding_addresses(username)
-    Returns an id/domain/username hash for a virtual user specified by user_id.
-=cut
-sub get_forwarding_addresses {
-        
-    local $sql = $select_forwards_by_user_sql;
-    
-    if ($sql =~ s/__SOURCE__/$_[0]/g) {
-        local $stmt = get_database()->prepare( $sql );
-        $stmt->execute or die qq~ 
-            "Whoops, $DBI::errstr"                                                      
-        ~;
-        @fields = $stmt->fetchrow_array;
-        $stmt->finish();
-        
-        return {'id'=>$fields[0], 'domain'=>$fields[1], 'source'=>$fields[2], 'destination'=>$fields[3]}; 
-    }
-    return undef;    
-}
-
-
 
 =head2 get_user_by_id(user_id)
     Returns an id/domain/username hash for a virtual user specified by user_id.
@@ -325,6 +357,23 @@ sub get_user_by_id {
     local $sql = $select_user_by_id_sql;
     
     if ($sql =~ s/__ID__/$_[0]/g) {
+        local $stmt = get_database()->prepare( $sql );
+        $stmt->execute or die qq~ 
+            "Whoops, $DBI::errstr"                                                      
+        ~;
+        @fields = $stmt->fetchrow_array;
+        $stmt->finish();
+        
+        return {'id'=>$fields[0], 'domain'=>$fields[1], 'username'=>$fields[2]}; 
+    }
+    return undef;    
+}
+
+sub get_user_by_username {
+        
+    local $sql = $select_user_by_username_sql;
+    
+    if ($sql =~ s/__USERNAME__/$_[0]/g) {
         local $stmt = get_database()->prepare( $sql );
         $stmt->execute or die qq~ 
             "Whoops, $DBI::errstr"                                                      

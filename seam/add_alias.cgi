@@ -21,13 +21,11 @@ if ($text{'proceed'} eq $actionBtn) {
 
     add_forwarder( $user->{domain}, $user->{username}, $in{destination} );
     
-    
-    
-    redirect("edit_user.cgi?uId=$user->{id}");
+    redirect( "edit_user.cgi?uId=$in{uId}" );
      
 } elsif ($text{'cancel'} eq $actionBtn) {
-    
-    redirect("index.cgi");
+
+    redirect( "edit_user.cgi?uId=$in{uId}" );
 
 } elsif ("" eq $actionBtn) {
 
@@ -38,7 +36,7 @@ if ($text{'proceed'} eq $actionBtn) {
     print &ui_form_start("add_alias.cgi");
 
     #print &ui_hidden( "dId", $user->{domain} );
-    print &ui_hidden( "uId", $user->{id} );
+    print &ui_hidden( "uId", $in{uId} );
  
     print &ui_textbox("destination", undef, 32, 0, 32, 'id="destination"' );
     pjsmanager::exampleInputText("destination", "user\@gmail.com");          
@@ -47,8 +45,8 @@ if ($text{'proceed'} eq $actionBtn) {
                          [ "actionBtn", $text{'cancel'}]] );
     
     print pjsmanager::compile(1);
-    &ui_print_footer( "edit_user.cgi?uId=$user->{id}", 
-                      $text{'edit_user_return'});
+    &ui_print_footer( "edit_user.cgi?uId=$in{uId}", 
+                      $text{'edit_user_title'});
 
 } 
 
