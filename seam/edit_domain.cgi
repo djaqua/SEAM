@@ -18,8 +18,10 @@ my $domainId = $cgi->param('dId');
                           $text{'edit_domain_add_user'}) );
 
 @col_attrs = ("width=5");
-                                                                               
-ui_print_header( undef, $text{'edit_domain_title'}, "SEAM", undef, 1, 1 );
+ 
+my $domain = get_domain_by_id( $domainId );
+my $desc = &text( "edit_domain_desc", $domain->{name} );                                                                               
+&ui_print_header( $desc, $text{'edit_domain_title'}, undef);
 
 # Render a form for selecting a domain which submddits to select_user.cgi
 print &ui_form_start( "delete_user.cgi" );

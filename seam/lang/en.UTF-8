@@ -12,7 +12,8 @@ delete_domain_title=Confirm Delete Mailserver Domain
 
 
 # EditDomain
-edit_domain_title=Edit Mailserver Domain
+edit_domain_title=Edit Domain
+edit_domain_desc=Edit Mailserver Domain $1
 edit_domain_add_user=Add a new user.
 edit_domain_user_list_username=Domain User
 edit_domain_user_list_autoresponse=Autoresponse
