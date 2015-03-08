@@ -16,14 +16,14 @@ Implemented Features
 Remaining Features, Requirements, & Miscellany
 ==============================================
 * Edit Auto-Responders for Users
-* EditDomain still needs to show aliases and autoresponse
+* EditDomain still needs to show autoresponse
 * Go back and use better variable names -- what I have now is a mess
   of different styles and techniques as I learned along the way
 * Stop relying on /root/seam.conf -- use Webmin configuration stuff
 * Cancel/Proceed/Init paradigm may be simplified with a nested if-statement
   which can also help with the perl execution failures
 * Clean up links for all pages
-* Add lang file entries for autoexamples
+* Add lang file entries for autoexamples, printed text
 * Add users as pre-'@' username for domains 
 * UpdatePassword could use some TLC
 
@@ -44,7 +44,6 @@ Non-Functional Requirements
 Bugs that need to be fixed
 ==========================
 * Should not be able to delete 0 domains
-* Deleting 0 domains & Cancel does NOT cause perl execution failure; bug? 
 * Should not be able to delete 0 users
 * Deleting 0 users & (Proceed | Cancel) causes perl execution failure 
   in seam-lib.pl at line 329 (uId not being passed along)

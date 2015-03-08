@@ -30,10 +30,17 @@ print &ui_columns_start( ["",
 
 @users = get_users( $in{dId} );    
 foreach my $cur (@users) {
-    
+ 
+    local $alias_str = "";
+    local @aliases = get_aliases( $cur->{username} );
+    for my $alias (@aliases) {
+        $alias_str .= $alias->{destination} . ", ";
+    }
+    $alias_str = substr( $alias_str, 0, length($alias_str)-2 );
+   
     local @cols = ("<a href='edit_user.cgi?uId=$cur->{id}'>$cur->{username}</a>",
                    "",  # TODO query autoresponse details; dates/active etc
-                   ""); # TODO query forwarding addresses for current user 
+                   $alias_str );
     print &ui_checked_columns_row(\@cols, \@col_attrs, "uId", $cur->{id});
 }
 
