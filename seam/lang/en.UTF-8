@@ -33,6 +33,10 @@ edit_user_add_alias=Add New Forwarding Address.
 edit_user_alias_list=Forwarding Addresses
 edit_user_delete_aliases=Delete Selected
 
+# DeleteUser
+delete_user_title=Delete User
+
+
 
 # AddAlias
 add_alias_title=Add Forwarding Address

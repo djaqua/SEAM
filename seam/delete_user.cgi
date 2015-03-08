@@ -9,11 +9,9 @@ require 'seam-lib.pl';
 if ($text{'proceed'} eq $in{'actionBtn'}) {
     
     local $user = get_user_by_id( @users[0] );
-    
     for my $uId (@users) {
         delete_user( $uId );
     }
-     
     redirect("edit_domain.cgi?dId=$user->{domain}");    
    
 } elsif ($text{cancel} eq $in{actionBtn}) {
@@ -23,7 +21,7 @@ if ($text{'proceed'} eq $in{'actionBtn'}) {
 
 } else {
 
-    &ui_print_header( "", $text{'index_title'}, "SEAM", undef, 1, 1);
+    &ui_print_header( undef, $text{'delete_user_title'}, undef);
  
     print &ui_form_start( "delete_user.cgi" );
     
