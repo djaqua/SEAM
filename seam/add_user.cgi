@@ -1,48 +1,43 @@
 #!/usr/bin/perl
 
-use CGI;
 
 require "seam-lib.pl";
 require "pjsmanager.pl";
 
-my $cgi = CGI->new();
+&ReadParse();
 
-my $domainId = $cgi->param('dId');
-my $userName = $cgi->param('userName');
-$actionBtn = $cgi->param('actionBtn');
-
-if ($text{'proceed'} eq $actionBtn) {
+if ($text{'proceed'} eq $in{actionBtn}) {
     
     # TODO sanitize $domainName
    
-    $user = add_user( $userName, $domainId, "" );
+    $user = add_user( $in{userName}, $in{dId}, "" );
     
     redirect("edit_user.cgi?uId=$user->{id}");
      
-} elsif ($text{'cancel'} eq $actionBtn) {
+} elsif ($text{'cancel'} eq $in{actionBtn}) {
     
-    redirect("index.cgi");
+    redirect("edit_domain.cgi?dId=$in{dId}");
 
-} elsif ("" eq $actionBtn) {
+} else {
     
-    local $domainName = get_domain_by_id( $domainId )->{'name'};
+    local $domain = get_domain_by_id( $in{dId} );
 
-    local $desc = &text( 'add_user_desc', $domainName );
+    local $desc = &text( 'add_user_desc', $domain->{name} );
     &ui_print_header( $desc, $text{'add_user_title'}, undef );
     
     print &ui_form_start("add_user.cgi");
 
-    print &ui_hidden("dId", $domainId);
+    print &ui_hidden("dId", $in{dId});
     
     print &ui_textbox("userName", undef, 32, 0, 32, 'id="userName"' );
     
-    pjsmanager::exampleInputText("userName", "user\@$domainName");          
+    pjsmanager::exampleInputText("userName", "user\@$domain->{name}");          
 
     print &ui_form_end( [[ "actionBtn", $text{'proceed'}], 
                          [ "actionBtn", $text{'cancel'}]] );
 
     print pjsmanager::compile(1);
-    &ui_print_footer( "edit_domain.cgi?dId=$domainId", 
+    &ui_print_footer( "edit_domain.cgi?dId=$in{dId}", 
                       $text{'edit_domain_title'} );
 } 
 

@@ -1,18 +1,21 @@
 #!/usr/bin/perl
 
-use CGI;
 
 require "seam-lib.pl";
 &ReadParse();
 
 
-my $cgi = CGI->new();
 
 my $user = get_user_by_id( $in{uId} );
 
 $desc = &text( "edit_user_desc", $user->{username} );
 &ui_print_header( $desc, $text{'edit_user_title'}, undef );
                                                                                 
+
+#--------------------------- ALIAS MANAGEMENT ---------------------------------
+
+print &ui_subheading($text{'edit_user_aliases'});
+
 @table_links = ( &select_all_link("aId", 0),
                  &select_invert_link("aId", 0),                                 
                  &ui_link("add_alias.cgi?uId=$in{uId}", 
@@ -39,7 +42,7 @@ print &ui_links_row( \@table_links );
 print &ui_form_end( [[ "actionBtn", $text{'edit_user_delete_aliases'}]] );      
  
 
-print &ui_hr();#------------------- ALIAS MANAGEMENT --------------------------
+print &ui_hr();#------------------- PASSWORD MANAGEMENT --------------------------
 
 print &ui_subheading($text{'edit_user_password'});
 print qq~

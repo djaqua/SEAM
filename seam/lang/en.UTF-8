@@ -28,6 +28,7 @@ add_user_desc=for domain $1
 # EditUser
 edit_user_title=Edit User
 edit_user_desc=$1
+edit_user_aliases=Forwarding Addreses
 edit_user_password=Password
 edit_user_add_alias=Add New Forwarding Address. 
 edit_user_alias_list=Forwarding Addresses
