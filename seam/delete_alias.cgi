@@ -36,17 +36,28 @@ if ($text{'proceed'} eq $actionBtn) {
 
 } else {
 
-    ui_print_header( undef, $text{'delete_alias_title'}, "SEAM", undef, 1, 1 );
+    local $desc = &text( 'delete_alias_desc', 
+                          $user->{username} );
 
+    &ui_print_header( $desc, $text{'delete_alias_title'}, undef );
 
     print &ui_form_start("delete_alias.cgi");
+    
+    local $alias_str = "";
 
-    print "TODO: functionality";
-
+    # TODO a do while loop would be awesome here, since we've already 
+    # called get_alias_by_id for the first element in aId
     for my $aId (@alias_ids) {
         print &ui_hidden( "aId", $aId );
 
+        $alias = get_alias( $aId );
+        $alias_str .= "$alias->{destination}" . ", ";
     }
+
+    $alias_str = substr( $alias_str, 0, length($alias_str)-2 );
+    print qq~<b>WARNING</b>: you are about to permanently delete the following
+             forwarding addresses: <i>$alias_str</i>~;
+
 
     print &ui_form_end( [[ "actionBtn", $text{'proceed'}], 
                          [ "actionBtn", $text{'cancel'}]] );

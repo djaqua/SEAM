@@ -40,7 +40,7 @@ add_alias_desc=for $1
 
 # DeleteAlias
 delete_alias_title=Delete Forwarding Address
-delete_alias_desc=from $1 to $2
+delete_alias_desc=for $1
 
 
 
