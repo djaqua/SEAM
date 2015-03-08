@@ -8,7 +8,7 @@ edit_mailserver_delete_domains=Delete Selected
 add_domain_title=Create Mailserver Domain
 
 # DeleteDomain
-delete_domain_title=Confirm Delete Mailserver Domain
+delete_domain_title=Delete Mailserver Domain
 
 
 # EditDomain

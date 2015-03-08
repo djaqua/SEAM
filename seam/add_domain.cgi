@@ -25,7 +25,7 @@ if ($text{'proceed'} eq $actionBtn) {
 
 } elsif ("" eq $actionBtn) {
 
-    ui_print_header( undef, $text{'add_domain_title'}, "SEAM", undef, 1, 1 );
+    ui_print_header( undef, $text{'add_domain_title'}, undef );
     
     print &ui_form_start("add_domain.cgi");
 

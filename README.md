@@ -24,7 +24,7 @@ Remaining Features, Requirements, & Miscellany
 * Stop relying on /root/seam.conf -- use Webmin configuration stuff
 * Cancel/Proceed/Init paradigm may be simplified with a nested if-statement
   which can also help with the perl execution failures
-* Clean up headers and links for all pages
+* Clean up links for all pages
 * Add lang file entries for autoexamples
 * Add users as pre-'@' username for domains 
 
@@ -45,18 +45,12 @@ Non-Functional Requirements
 Bugs that need to be fixed
 ==========================
 * Should not be able to delete 0 domains
-
 * Deleting 0 domains & Cancel does NOT cause perl execution failure; bug? 
-
 * Should not be able to delete 0 users
-
 * Deleting 0 users & (Proceed | Cancel) causes perl execution failure 
   in seam-lib.pl at line 329 (uId not being passed along)
-
 * Should not be able to delete 0 aliases 
     -- deleting 0 aliases results in perl execution failure in seam-lib.pl 
-       at line 215
-
 * Order seems to matter for the forms in EditUser; if Add/List/RemoveAlias 
   comes after update password, then invert/all selection scripts won't work.
     -- there's probably a way to specify which form belongs to which set of 

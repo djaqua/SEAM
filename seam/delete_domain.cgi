@@ -23,7 +23,7 @@ if ($text{'proceed'} eq $in{'actionBtn'}) {
 
 } else {
 
-    &ui_print_header( "", $text{'delete_domain_title'}, "SEAM", undef, 1, 1);
+    &ui_print_header( undef, $text{'delete_domain_title'}, undef );
 
     print &ui_form_start( "delete_domain.cgi" );                               
 
@@ -40,7 +40,8 @@ if ($text{'proceed'} eq $in{'actionBtn'}) {
     $domainNames = substr( $domainNames, 0, length($domainNames)-2 );      
 
     # TODO build a string of domain names selected for deletion                 
-    print qq~ <p>WARNING: You are about to delete the following domains: $domainNames</p>
+    print qq~<b>WARNING</b>: You are about to permanently delete the following
+             domains: $domainNames
             ~;                                                                  
     print &ui_form_end( [[ "actionBtn", $text{proceed}],                       
                          [ "actionBtn", $text{cancel}]] );                      
