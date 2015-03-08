@@ -24,8 +24,11 @@ if ($text{'proceed'} eq $actionBtn) {
     redirect("index.cgi");
 
 } elsif ("" eq $actionBtn) {
+    
+    local $domainName = get_domain_by_id( $domainId )->{'name'};
 
-    ui_print_header( undef, $text{'add_user_title'}, "SEAM", undef, 1, 1 );
+    local $desc = &text( 'add_user_desc', $domainName );
+    &ui_print_header( $desc, $text{'add_user_title'}, undef );
     
     print &ui_form_start("add_user.cgi");
 
@@ -33,7 +36,6 @@ if ($text{'proceed'} eq $actionBtn) {
     
     print &ui_textbox("userName", undef, 32, 0, 32, 'id="userName"' );
     
-    $domainName = get_domain_by_id( $domainId )->{'name'};
     pjsmanager::exampleInputText("userName", "user\@$domainName");          
 
     print &ui_form_end( [[ "actionBtn", $text{'proceed'}], 

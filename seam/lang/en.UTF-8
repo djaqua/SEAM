@@ -13,7 +13,7 @@ delete_domain_title=Confirm Delete Mailserver Domain
 
 # EditDomain
 edit_domain_title=Edit Domain
-edit_domain_desc=Edit Mailserver Domain $1
+edit_domain_desc=$1
 edit_domain_add_user=Add a new user.
 edit_domain_user_list_username=Domain User
 edit_domain_user_list_autoresponse=Autoresponse
@@ -21,21 +21,26 @@ edit_domain_user_list_alias=Forwarding Addresses
 edit_domain_delete_users=Delete Selected
 
 # AddUser
-add_user_title=Create Mailserver Domain User
+add_user_title=Create User
+add_user_desc=for domain $1
+
 
 # EditUser
 edit_user_title=Edit User
-edit_user_desc=Edit Mailserver Domain User $1
+edit_user_desc=$1
 edit_user_password=Password
 edit_user_add_alias=Add New Forwarding Address. 
 edit_user_alias_list=Forwarding Addresses
 edit_user_delete_aliases=Delete Selected
 
 
+# AddAlias
+add_alias_title=Add Forwarding Address
+add_alias_desc=for $1
 
-
-
-
+# DeleteAlias
+delete_alias_title=Delete Forwarding Address
+delete_alias_desc=from $1 to $2
 
 
 

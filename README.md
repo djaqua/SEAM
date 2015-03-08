@@ -25,6 +25,8 @@ Remaining Features, Requirements, & Miscellany
 * Cancel/Proceed/Init paradigm may be simplified with a nested if-statement
   which can also help with the perl execution failures
 * Clean up headers and links for all pages
+* Add lang file entries for autoexamples
+* Add users as pre-'@' username for domains 
 
 Functional Requirements
 =======================

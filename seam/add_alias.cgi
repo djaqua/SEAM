@@ -29,7 +29,8 @@ if ($text{'proceed'} eq $actionBtn) {
 
 } elsif ("" eq $actionBtn) {
 
-    ui_print_header( undef, $text{'add_user_title'}, "SEAM", undef, 1, 1 );
+    local $desc = &text( 'add_alias_desc', $user->{username} );
+    &ui_print_header( $desc, $text{'add_alias_title'}, undef );
 
     # TODO use user id to get user to get domain id 
 
