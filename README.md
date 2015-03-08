@@ -17,8 +17,6 @@ Remaining Features, Requirements, & Miscellany
 ==============================================
 * Edit Auto-Responders for Users
 * EditDomain still needs to show aliases and autoresponse
-* Go back and remove all the CGI dependencies and use $in{VARNAME} 
-  hash built by ReadParse() 
 * Go back and use better variable names -- what I have now is a mess
   of different styles and techniques as I learned along the way
 * Stop relying on /root/seam.conf -- use Webmin configuration stuff
@@ -27,6 +25,7 @@ Remaining Features, Requirements, & Miscellany
 * Clean up links for all pages
 * Add lang file entries for autoexamples
 * Add users as pre-'@' username for domains 
+* UpdatePassword could use some TLC
 
 Functional Requirements
 =======================
@@ -56,6 +55,8 @@ Bugs that need to be fixed
     -- there's probably a way to specify which form belongs to which set of 
        JavaScript functions, if not, then perhaps submit a fixed scripting
        engine to Webmin (via Sandbox pattern)
+* Deleting users does not automatically remove aliases, so neither does
+  deleting domains
 
 Project Hints
 =============

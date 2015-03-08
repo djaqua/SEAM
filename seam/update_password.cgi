@@ -1,34 +1,29 @@
 #!/usr/bin/perl
-use CGI;
 
 
-use DBI;
 require 'seam-lib.pl';
-
+&ReadParse();
  
 
-my $cgi = CGI->new();
 
-my $actionBtn = $cgi->param('actionBtn');
-my $user = get_user_by_id( $cgi->param('uId') );
-my $password1 = $cgi->param('password1');
-my $password2 = $cgi->param('password2');
+my $user = get_user_by_id( $in{uId} );
 
 
-if ($text{save} eq $actionBtn) {
+if ($text{save} eq $in{actionBtn}) {
     
-    if ($password1 eq $password2) {
-        update_password($user->{id}, $password1);
+    if ($in{password1} eq $in{password2}) {
+        update_password($user->{id}, $in{password1});
         redirect("edit_domain.cgi?dId=$user->{domain}");
     } else {
 
-        ui_print_header( "", $text{'index_title'}, "SEAM", undef, 1, 1);
+        &ui_print_header( undef, $text{'update_password_title'}, undef );
         # TODO PASSWORD MISMATCH
-        ui_print_footer( "", $text{'index_return'},);
+        print "TODO: functionality (warning and redraw form)";
+        &ui_print_footer( "", $text{'index_return'},);
 
     }
 
-} elsif ($text{cancel} eq $actionBtn) {
+} elsif ($text{cancel} eq $in{actionBtn}) {
     redirect("edit_user.cgi?uId=$user->{id}");
 }
 
