@@ -1,29 +1,23 @@
 #!/usr/bin/perl
 
-use CGI;
-
 require "seam-lib.pl";
 require "pjsmanager.pl";
 
+&ReadParse();
 
-my $cgi = CGI->new();
-
-$domainName = $cgi->param('domainName');
-$actionBtn = $cgi->param('actionBtn');
-
-if ($text{'proceed'} eq $actionBtn) {
+if ($text{'proceed'} eq $in{actionBtn}) {
     
     # TODO sanitize $domainName
    
-    $domain = add_domain( $domainName );
+    $domain = add_domain( $in{domainName} );
     
     redirect("edit_domain.cgi?dId=$domain->{id}");
      
-} elsif ($text{'cancel'} eq $actionBtn) {
+} elsif ($text{'cancel'} eq $in{actionBtn}) {
     
     redirect("index.cgi");
 
-} elsif ("" eq $actionBtn) {
+} else {
 
     ui_print_header( undef, $text{'add_domain_title'}, undef );
     
@@ -31,7 +25,6 @@ if ($text{'proceed'} eq $actionBtn) {
 
     print &ui_textbox("domainName");
     pjsmanager::exampleInputText("domainName", "example.net");          
-    # TODO: autoexample with pjsmanager 
 
     print &ui_form_end( [[ "actionBtn", $text{'proceed'}], 
                          [ "actionBtn", $text{'cancel'}]] );

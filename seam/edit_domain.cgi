@@ -4,22 +4,18 @@
 # Author: Drew Jaqua <djaqua@smnet.net>
 # Description: "EditDomain" 
 
-use CGI;
-                                          
 require 'seam-lib.pl';
 
-my $cgi = CGI->new();
-
-my $domainId = $cgi->param('dId');
+&ReadParse();
 
 @table_links = ( &select_all_link("uId", 0), 
                  &select_invert_link("uId", 0),
-                 &ui_link("add_user.cgi?dId=$domainId", 
+                 &ui_link("add_user.cgi?dId=$in{dId}", 
                           $text{'edit_domain_add_user'}) );
 
 @col_attrs = ("width=5");
  
-my $domain = get_domain_by_id( $domainId );
+my $domain = get_domain_by_id( $in{dId} );
 my $desc = &text( "edit_domain_desc", $domain->{name} );                                                                               
 &ui_print_header( $desc, $text{'edit_domain_title'}, undef);
 
@@ -32,7 +28,7 @@ print &ui_columns_start( ["",
                           $text{'edit_domain_user_list_alias'}], 
                          50, 0, \@col_attrs );
 
-@users = get_users( $domainId );    
+@users = get_users( $in{dId} );    
 foreach my $cur (@users) {
     
     local @cols = ("<a href='edit_user.cgi?uId=$cur->{id}'>$cur->{username}</a>",

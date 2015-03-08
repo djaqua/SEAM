@@ -1,6 +1,5 @@
 #!/usr/bin/perl
 
-
 require 'seam-lib.pl';
 
 &ReadParse();
